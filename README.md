@@ -9,7 +9,7 @@ Three levels of authentication:
 
 
 ## Run the app
-
+might need to do a few npm installs :))
 ```lua
 To start the client:
 1. cd client
