@@ -11,11 +11,11 @@ Three levels of authentication:
 ## Run the app
 
 ```lua
-To start the front end:
+To start the front-end:
 1. cd client
 2. npm start
 
-To start the back end:
+To start the back-end:
 1. cd backend
 2. nodemon index.js
 
