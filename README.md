@@ -21,5 +21,5 @@ To start the back-end:
 
 Client launches on localhost:3000, Server on localhost:4000
 ```
-##todo
+## todo
 one command to start both client & server; prob use concurrently 
