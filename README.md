@@ -22,4 +22,5 @@ To start the server:
 Client launches on localhost:3000, Server on localhost:4000
 ```
 ## todo
-one command to start both client & server; prob use concurrently 
+- one command to start both client & server; prob use concurrently 
+- Remove node_modules from client .gitignore not working for some random reason
