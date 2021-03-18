@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 
 mongoose.connect('mongodb://127.0.0.1:27017/multiauth', {
 	useNewUrlParser: true,
+	useUnifiedTopology: true
 });
 const connection = mongoose.connection;
 
@@ -19,4 +20,8 @@ connection.once('open', function () {
 
 app.listen(PORT, function () {
 	console.log('Server is running on Port: ' + PORT);
+});
+
+app.get('/', (req, res) => {
+	res.send('SES 2B backend');
 });
