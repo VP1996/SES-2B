@@ -1,0 +1,23 @@
+{
+  "name": "2b-authenticateuts",
+  "version": "1.0.0",
+  "description": "Studio 2B Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd backend && nodemon index.js\" \"cd client && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VP1996/SES-2B.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VP1996/SES-2B/issues"
+  },
+  "homepage": "https://github.com/VP1996/SES-2B#readme",
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}
