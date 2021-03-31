@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import NavBar from '../Navbar/Navbar';
+import NavBar from '../../components/Navbar/Navbar';
 
-const Student = () => {
+const Teacher = () => {
 	return (
 		<div className='container'>
 			<NavBar />
-			<h1>Testing routing:Student</h1>
-			<br />
+			<h1>Teacher Profile</h1>
 		</div>
 	);
 };
 
-export default Student;
+export default TeacherLogin;

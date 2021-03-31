@@ -5,10 +5,10 @@ import {
 	Redirect,
 	Route,
 } from 'react-router-dom';
-import Home from './components/Home/Home';
+import Home from './views/Home/Home';
 
-import Student from './components/Studenthome/Studenthome';
-import Teacher from './components/Teacherhome/Teacherhome';
+import StudentLogin from './views/StudentLogin/StudentLogin';
+import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
@@ -18,8 +18,8 @@ const App = () => {
 				<Switch>
 					{' '}
 					<Route path='/' exact component={Home} />
-					<Route path='/Student' exact component={Student} />
-					<Route path='/Teacher' exact component={Teacher} />
+					<Route path='/student-login' exact component={StudentLogin} />
+					<Route path='/teacher-login' exact component={TeacherLogin} />
 				</Switch>
 			</Router>
 		</div>

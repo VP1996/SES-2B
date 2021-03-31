@@ -7,7 +7,7 @@ const Navbar = () => {
 		<div className='container'>
 			<nav className='navbar navbar-expand-lg navbar-light'>
 				<Link to='/' className='navbar-brand'>
-					Multi-Factor Authentication
+					AuthenticateUTS
 				</Link>
 				<div className='collpase navbar-collapse'>
 					<ul className='navbar-nav mr-auto'>
@@ -17,13 +17,13 @@ const Navbar = () => {
 							</Link>
 						</li>
 						<li className='navbar-item'>
-							<Link to='/Student' className='nav-link'>
-								Student
+							<Link to='/student-login' className='nav-link'>
+								Login
 							</Link>
 						</li>
 						<li className='navbar-item'>
-							<Link to='/Teacher' className='nav-link'>
-								Teacher
+							<Link to='/teacher-login' className='nav-link'>
+								Sign up
 							</Link>
 						</li>
 					</ul>

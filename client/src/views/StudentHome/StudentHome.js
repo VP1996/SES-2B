@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
-import NavBar from '../Navbar/Navbar';
+import NavBar from '../../components/Navbar/Navbar';
 
-const Home = () => {
+const Student = () => {
 	return (
 		<div className='container'>
 			<NavBar />
-			<h1>Testing routing: HOME</h1>
+			<h1>Student Profile</h1>
+			<br />
 		</div>
 	);
 };
 
-export default Home;
+export default Student;
