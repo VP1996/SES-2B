@@ -1,25 +1,8 @@
-<<<<<<< HEAD:client/src/views/StudentHome/StudentHome.js
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import NavBar from '../../components/Navbar/Navbar';
-
-const Student = () => {
-	return (
-		<div className='container'>
-			<NavBar />
-			<h1>Student Profile</h1>
-			<br />
-		</div>
-	);
-};
-
-export default Student;
-=======
 import React, {Component} from 'react';
 import Scheduler, {SchedulerData, ViewTypes} from 'react-big-scheduler';
 import withDragDropContext from './withDnDContext';
 import 'react-big-scheduler/lib/css/style.css';
-import NavBar from '../Navbar/Navbar';
+import NavBar from '../../components/Navbar/Navbar';
 
 const DemoData = {
     resources: [{
@@ -143,4 +126,3 @@ class Student extends Component {
 }
 
 export default withDragDropContext(Student)
->>>>>>> d9c5397a (Show student timetable will clicking event hooks.):client/src/components/Studenthome/Studenthome.js
