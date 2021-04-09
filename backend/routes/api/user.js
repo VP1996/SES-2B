@@ -8,10 +8,14 @@ router.get('/user', async (req, res) => {
 	res.send('user route testing!');
 });
 
-router.get('/getUsers', (req, res) => {
-	User.find()
-		.then((users) => res.json(user))
-		.catch((err) => res.status(404).json({ nouserfound: 'No users found' }));
+router.get('/getAllUsers', (req, res) => {
+	User.find({}, function (err, users) {
+		var userMap = {};
+		users.forEach(function (user) {
+			userMap[user._id] = user;
+		});
+		res.send(userMap);
+	});
 });
 
 router.post('/addUser', async (req, res) => {
@@ -29,7 +33,7 @@ router.post('/addUser', async (req, res) => {
 	res.send(user);
 });
 
-router.get('/getStudents', (req, res) => {
+router.get('/getStudents', async (req, res) => {
 	User.find({ isStudent: true })
 		.then((user) => res.json(user))
 		.catch((err) => res.status(400).json('Error: ' + err));
