@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/VP1996/SES-2B#readme",
   "dependencies": {
-    "concurrently": "^6.0.0"
+    "concurrently": "^6.0.0",
+    "express-validator": "^6.10.0"
   }
 }
