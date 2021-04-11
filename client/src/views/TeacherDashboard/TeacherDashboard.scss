@@ -1,0 +1,51 @@
+.dashboard-view{
+    .horizontal-cards{
+        display: flex;
+        justify-content: space-between;
+        margin-left: 40px;
+        margin-right: 40px;
+    
+    }
+    .recent-classes-cards{
+        display: flex;
+        justify-content: space-between;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .dropdown-divider{
+        border-width: 4px;
+        margin: 30px 40px;
+        display: flex;
+    }
+    h5{
+        margin: 30px 48px 30px;
+        color: gray;
+    }
+    .links{
+        position: absolute;
+        bottom: 0;
+        margin: 20px 5px;
+    } 
+    .card{
+        border-radius: 30px;
+        box-shadow: 5px 10px 10px lightgray;
+        border: 0.5px;
+    }
+    .react-calendar__tile{
+        padding: 0.40em 0.5em;
+    }
+    .react-calendar{
+        border: 0px;
+    }
+    .react-calendar__navigation{
+        margin-bottom: 0px;
+    }
+    .profile-btn{
+        color: white;
+        background-color: orange;
+        border-radius: 20px;
+        border: none;
+        height: 40px;
+        width: 100px;
+    }
+}

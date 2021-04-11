@@ -11,6 +11,8 @@ import StudentLogin from './views/StudentLogin/StudentLogin';
 import TeacherLogin from './views/TeacherLogin/TeacherLogin';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import StudentHome from "./views/StudentHome/StudentHome";
+import StudentDashboard from "./views/StudentDashboard/StudentDashboard";
+import TeacherDashboard from "./views/TeacherDashboard/TeacherDashboard";
 
 const App = () => {
 	return (
@@ -22,6 +24,9 @@ const App = () => {
 					<Route path='/student-login' exact component={StudentLogin} />
 					<Route path='/teacher-login' exact component={TeacherLogin} />
 					<Route path='/student-home' exact component={StudentHome} />
+					<Route path='/student-dashboard' exact component={StudentDashboard} />
+					<Route path='/teacher-dashboard' exact component={TeacherDashboard} />
+
 				</Switch>
 			</Router>
 		</div>
