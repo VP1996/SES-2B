@@ -17,17 +17,16 @@ class TeacherDasboard extends Component {
     render() {
         return (
             <div className="dashboard-view">
-                <NavBar/>
-
+                <NavBar />
                 <div className="horizontal-cards">
                     {/* // card #1 */}
-                    <Card style={{ width: '35rem', height: '19.5rem' }}>
+                    <Card style={{ width: '38%', height: '19.5rem' }}>
                         <Card.Body>
                             <Card.Title>Your Teacher Profile</Card.Title>
                             <Card.Text>
                                 Hi Kate, you can view/update your personal information by visiting
                                 your profile. For facial recognition you can also add your images which
-                                can be used to match later.Lorem ipsum dolor sit amet, consectetur
+                                can be used to match later. Lorem ipsum dolor sit amet, consectetur
                                 elit, sed do eiusmod tempor incididunt ut labore et dolore magna
                                 aliqua.
 
@@ -38,7 +37,7 @@ class TeacherDasboard extends Component {
                         </Card.Body>
                     </Card>
                     {/* // card#2 */}
-                    <Card style={{ width: '25rem', height: '19.5rem' }}>
+                    <Card style={{ width: '28%', height: '19.5rem' }}>
                         <Card.Body>
                             <Card.Title>Today's Classes</Card.Title>
                             <Card.Text>
@@ -52,7 +51,7 @@ class TeacherDasboard extends Component {
                         </Card.Body>
                     </Card>
                     {/* // card #3 */}
-                    <Card style={{ width: '25rem', height: '19.5rem' }}>
+                    <Card style={{ width: '28%', height: '19.5rem' }}>
                         <Card.Body>
                             <Card.Title style={{ marginBottom: '0px' }}>Calendar</Card.Title>
                             <Calendar />
@@ -66,39 +65,46 @@ class TeacherDasboard extends Component {
                 <h5>Recent Classes Taught</h5>
                 <div className="recent-classes-cards">
                     {/* // card #1 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(0,128,128, 0.2)'}}>
                         <Card.Body>
                             <Card.Title>EPP2</Card.Title>
-                            <Card.Text>Engineering Practice Preparation 2</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+                                <Card.Text className="recent-class-text">Engineering Practice Preparation 2</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
                         </Card.Body>
                     </Card>
                     {/* // card#2 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(255,0,0, 0.3)'}}>
                         <Card.Body>
                             <Card.Title>MM1</Card.Title>
-                            <Card.Text>Mathematical Modelling 1</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+                                <Card.Text className="recent-class-text">Mathematical Modelling 1</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
+
                         </Card.Body>
                     </Card>
                     {/* // card #3 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(128,0,128, 0.2)'}}>
                         <Card.Body>
                             <Card.Title>BRM12</Card.Title>
-                            <Card.Text>Business Requirements Modelling</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+                                <Card.Text className="recent-class-text">Business Requirements Modelling</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
                         </Card.Body>
                     </Card>
                     {/* // card #4 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem', backgroundColor: 'rgb(255,255, 0, 0.3)' }}>
                         <Card.Body>
                             <Card.Title>EPR1</Card.Title>
-                            <Card.Text>Engineering Practice Reflection 1</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+
+                                <Card.Text className="recent-class-text">Engineering Practice Reflection 1</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
+
                         </Card.Body>
                     </Card>
                 </div>

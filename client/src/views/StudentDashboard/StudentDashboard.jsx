@@ -17,7 +17,7 @@ class StudentDasboard extends Component {
     render() {
         return (
             <div className="dashboard-view">
-                <NavBar/>
+                <NavBar />
 
                 <div className="horizontal-cards">
                     {/* // card #1 */}
@@ -66,39 +66,46 @@ class StudentDasboard extends Component {
                 <h5>Recently Attended Classes</h5>
                 <div className="recent-classes-cards">
                     {/* // card #1 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(0,128,128, 0.2)'}}>
                         <Card.Body>
                             <Card.Title>EPP2</Card.Title>
-                            <Card.Text>Engineering Practice Preparation 2</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+                                <Card.Text className="recent-class-text">Engineering Practice Preparation 2</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
                         </Card.Body>
                     </Card>
                     {/* // card#2 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(255,0,0, 0.3)'}}>
                         <Card.Body>
                             <Card.Title>MM1</Card.Title>
-                            <Card.Text>Mathematical Modelling 1</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+                                <Card.Text className="recent-class-text">Mathematical Modelling 1</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
+
                         </Card.Body>
                     </Card>
                     {/* // card #3 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(128,0,128, 0.2)'}}>
                         <Card.Body>
                             <Card.Title>BRM12</Card.Title>
-                            <Card.Text>Business Requirements Modelling</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+                                <Card.Text className="recent-class-text">Business Requirements Modelling</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
                         </Card.Body>
                     </Card>
                     {/* // card #4 */}
-                    <Card style={{ width: '20rem' }}>
+                    <Card style={{ width: '20rem', backgroundColor: 'rgb(255,255, 0, 0.3)' }}>
                         <Card.Body>
                             <Card.Title>EPR1</Card.Title>
-                            <Card.Text>Engineering Practice Reflection 1</Card.Text>
-                            <Card.Link href="#">Card Link</Card.Link>
-                            <Card.Link href="#">Another Link</Card.Link>
+                            <div className="card-body-items">
+
+                                <Card.Text className="recent-class-text">Engineering Practice Reflection 1</Card.Text>
+                                <div className="lecture-img"></div>
+                            </div>
+
                         </Card.Body>
                     </Card>
                 </div>
