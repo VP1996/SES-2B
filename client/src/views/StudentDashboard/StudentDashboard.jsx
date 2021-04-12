@@ -18,7 +18,7 @@ class StudentDasboard extends Component {
         return (
             <div className="dashboard-view">
                 <NavBar />
-
+                <h4>Dashboard</h4>
                 <div className="horizontal-cards">
                     {/* // card #1 */}
                     <Card style={{ width: '35rem', height: '19.5rem' }}>
