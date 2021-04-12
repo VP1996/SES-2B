@@ -1,0 +1,85 @@
+.dashboard-view{
+    .horizontal-cards{
+        display: flex;
+        justify-content: space-between;
+        margin-left: 40px;
+        margin-right: 40px;
+    
+    }
+    .recent-classes-cards{
+        display: flex;
+        justify-content: space-between;
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .dropdown-divider{
+        border-width: 4px;
+        margin: 45px 40px;
+        display: flex;
+    }
+    h5{
+        margin: 30px 48px 30px;
+        color: gray;
+    }
+    h4{
+        margin-left: 45px;
+        color: lightgray;
+    }
+    .links{
+        position: absolute;
+        bottom: 0;
+        margin: 20px 5px;
+    } 
+    .card{
+        border-radius: 30px;
+        box-shadow: 5px 10px 10px lightgray;
+        border: 0.5px;
+    }
+    .react-calendar__tile{
+        padding: 0.40em 0.5em;
+    }
+    .react-calendar{
+        border: 0px;
+        display: contents;
+        position: fixed;
+    }
+    .react-calendar__navigation{
+        margin-bottom: 0px;
+    }
+    .profile-btn{
+        color: white;
+        background-color: orange;
+        border-radius: 20px;
+        border: none;
+        height: 40px;
+        width: 100px;
+    }
+    .lecture-img{
+        background-image: url('../../images/lecture.jpg');
+        width: 80px;
+        height: 50px;
+        background-size: cover;
+        float: right;
+        margin-left: 10px;
+    }
+    .card-body-items{
+        display: flex;
+    }
+    .card-title{
+        margin-bottom: 0.25rem;
+    }
+    .recent-class-text{
+        width: 195px;
+        height: 50px;
+    }
+    .list-group-item{
+        display: list-item;
+        left: 20px;
+    }
+    .list-group{
+        padding-left: 20px;
+        width: 95%;
+        display: contents;
+        float: right;
+    }
+}
