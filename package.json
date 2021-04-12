@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/VP1996/SES-2B#readme",
   "dependencies": {
-    "concurrently": "^6.0.0"
+    "bootstrap": "^4.6.0",
+    "concurrently": "^6.0.0",
+    "react-bootstrap": "^1.5.2"
   }
 }
