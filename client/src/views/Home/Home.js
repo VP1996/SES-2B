@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css';
-import NavBar from '../../components/Navbar/Navbar';
+import './Home.scss';
+import NavBar from '../../components/Navbar/GreyNavBar';
 
 const Home = () => {
 	return (
-		<div className='container'>
+		<div className='homepage-view'>
 			<NavBar />
-			<h1>Testing routing: HOME</h1>
+			
 		</div>
 	);
 };

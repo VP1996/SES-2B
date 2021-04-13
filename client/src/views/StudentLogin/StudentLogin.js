@@ -1,66 +1,53 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import NavBar from "../../components/Navbar/Navbar";
+import NavBar from "../../components/Navbar/GreyNavBar";
+import './StudentLogin.scss'
 
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-
+import Button from "react-bootstrap/Button";
 
 const StudentLogin = () => {
   return (
-    <div className="container">
+    <div className="studentLogin-view">
       <NavBar />
-      
-      <h1 class="font-weight-bold">Student log In</h1>
-      <container>
-       
-        <Row md={{ span: 6, offset: 6 }}>
-          <Col>
-            <Card bg={"light"} style={{ width: "18rem-" }}>
-              <Card.Body>
-                <Form
-                  action="/handle-login"
-                  method="post"
-                  class="was-validated"
-                >
-                  <Form.Group controlId="loginFormEmail">
-                    <Form.Label class="font-weight-bold">Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="Enter Email"
-                      required
-                    />
-                    <Form.Text className="text-muted">
-                      We'll never share your email with anyone else.
-                    </Form.Text>
-                  </Form.Group>
+      <div className="signup-container">
+        <Card className="left-card">
+          <Card.Body>
+            <h3 style={{ margin: '10%', marginTop: '20%', marginBottom: '0px', font: 'Calibri' }}>Student Sign In</h3>
+            <Form className="student-form">
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Text className="text-muted">
+                  We'll never share your email with anyone else.
+    </Form.Text>
+              </Form.Group>
 
-                  <Form.Group controlId="loginFormPassword">
-                    <Form.Label class="font-weight-bold">Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      id="password"
-                      name="password"
-                      placeholder="Password"
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="loginFormCheckbox">
-                    <Form.Check type="checkbox" label="ReCaptcha" required />
-                  </Form.Group>
-                  <button type="submit" class="btn btn-outline-info">
-                    Submit
-                  </button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </container>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" />
+              </Form.Group>
+              <Form.Group controlId="formBasicCheckbox">
+                <Form.Check type="checkbox" label="Check me out" />
+              </Form.Group>
+              <Button variant="primary" type="submit" className="login-btn">
+                Submit
+  </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+        <Card className="right-card">
+          <Card.Body style={{ backgroundColor: '#62ABF3', borderRadius: '0 30px 30px 0' }}>
+            <div className="right-content">
+              <h4 style={{ marginLeft: '28%', color: 'white' }}> Not a Student?</h4>
+              <Button style={{ width: '50%', height: '50px', borderRadius: '30px', backgroundColor: 'transparent', borderColor: 'white', margin: '5% 25% 5% 25%', paddingTop: '10px'}}  href="/teacher-login"> Sign in as a Teacher!</Button>
+              <br />
+              <Button style={{ textDecorationLine: 'underline', border: 'none', backgroundColor: 'transparent', margin: '0% 25% 5% 28%', fontSize: '14px' }} href="/teacher-login">I'm actually an Admin</Button>
+            </div>
+          </Card.Body>
+        </Card>
+
+      </div>
       <br />
     </div>
   );
