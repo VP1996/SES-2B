@@ -11,7 +11,7 @@ class BlueNavBar extends Component {
 
     render() {
         return (
-            <div className="common-navbar">
+            <div className="blue-navbar">
                     <Navbar bg="primary" variant="dark">
                         <Navbar.Brand href="#home">[authenticateUTS]</Navbar.Brand>
                         <div className="nav-menu">
