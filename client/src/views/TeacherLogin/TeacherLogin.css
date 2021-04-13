@@ -1,0 +1,26 @@
+.box-color {
+  background-color: #4cc3e7;
+}
+
+.center {
+  margin: auto;
+  width: auto;
+  height: 150%;
+  padding: 15px;
+}
+
+.center-text {
+  line-height: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+.center-two {
+  text-align: center;
+}
+.button-corner {
+  margin: auto;
+  padding: 10px;
+  width: 85%;
+  height: 110%;
+}
