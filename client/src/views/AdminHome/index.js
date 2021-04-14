@@ -86,3 +86,14 @@ class AdminHome extends Component {
 }
 
 export default AdminHome
+
+student = {
+    username: 'abc',
+    email: '',
+    studentId: '',
+    attendence: {
+        facial: false,
+        captcha: false,
+        pin: false,
+    }
+}
