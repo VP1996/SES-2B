@@ -17,7 +17,7 @@ class TeacherDasboard extends Component {
     render() {
         return (
             <div className="dashboard-view">
-                <NavBar dashboardURL='/teacher-dashboard' profileURL='teacher-profile' classesURL='teacher-classes'/>
+                <NavBar dashboardURL='/teacher/dashboard' profileURL='/teacher/profile' classesURL='/teacher/classes'/>
                 <h4 style={{paddingTop:'20px'}}>Dashboard</h4>
                 <div className="horizontal-cards">
                     {/* // card #1 */}

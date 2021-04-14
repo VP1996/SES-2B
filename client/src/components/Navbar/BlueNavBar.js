@@ -13,7 +13,7 @@ class BlueNavBar extends Component {
         return (
             <div className="blue-navbar">
                 <Navbar bg="primary" variant="dark">
-                    <Navbar.Brand href="#home">[authenticateUTS]</Navbar.Brand>
+                    <Navbar.Brand href={this.props.dashboardURL}>[authenticateUTS]</Navbar.Brand>
                     <div className="nav-menu">
                         <Nav className="mr-auto">
                             <Nav.Link href={this.props.dashboardURL}>Dashboard</Nav.Link>
