@@ -17,8 +17,8 @@ class TeacherDasboard extends Component {
     render() {
         return (
             <div className="dashboard-view">
-                <NavBar />
-                <h4>Dashboard</h4>
+                <NavBar dashboardURL='/teacher/dashboard' profileURL='/teacher/profile' classesURL='/teacher/classes'/>
+                <h4 style={{paddingTop:'20px'}}>Dashboard</h4>
                 <div className="horizontal-cards">
                     {/* // card #1 */}
                     <Card style={{ width: '38%', height: '19.5rem' }}>

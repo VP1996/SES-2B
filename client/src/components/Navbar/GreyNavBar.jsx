@@ -12,16 +12,15 @@ class GreyNavBar extends Component {
     render() {
         return (
             <div className="grey-navbar">
-                    <Navbar style={{backgroundColor: 'lightgrey'}}>
-                        <Navbar.Brand href="/">[authenticateUTS]</Navbar.Brand>
-                        <div className="nav-menu">
-                            <Nav className="mr-auto">
-                                <Nav.Link href="/student-login">Student Login</Nav.Link>
-                                <Nav.Link href="/teacher-login">Teacher Login</Nav.Link>
-                            </Nav>
-                        </div>
-                    </Navbar>
-                </div>
+                <Navbar style={{ backgroundColor: 'lightgrey' }}>
+                    <Navbar.Brand href="/">[authenticateUTS]</Navbar.Brand>
+                    <div className="nav-menu">
+                        <Nav className="mr-auto">
+                            <Nav.Link href="/student/login">Login</Nav.Link>
+                        </Nav>
+                    </div>
+                </Navbar>
+            </div>
         )
     }
 }

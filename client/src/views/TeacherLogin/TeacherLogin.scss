@@ -1,11 +1,11 @@
 .signup-container{
-    display: flex;
     justify-content: center;
-    margin: 30px 18% 0px 18%;
+    margin: 20px 18% 0px 18%;
 
     .left-card{
         box-shadow: 5px 5px 10px lightgray;
         width: 50%;
+        border: none;
     }
     .right-card{
         border-radius: 0 30px 30px 0;
