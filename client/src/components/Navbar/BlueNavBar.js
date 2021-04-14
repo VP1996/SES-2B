@@ -12,17 +12,18 @@ class BlueNavBar extends Component {
     render() {
         return (
             <div className="blue-navbar">
-                    <Navbar bg="primary" variant="dark">
-                        <Navbar.Brand href="#home">[authenticateUTS]</Navbar.Brand>
-                        <div className="nav-menu">
-                            <Nav className="mr-auto">
-                                <Nav.Link href="#home">Home</Nav.Link>
-                                <Nav.Link href="#profile">Profile</Nav.Link>
-                                <Nav.Link href="#classes">Classes</Nav.Link>
-                            </Nav>
-                        </div>
-                    </Navbar>
-                </div>
+                <Navbar bg="primary" variant="dark">
+                    <Navbar.Brand href="#home">[authenticateUTS]</Navbar.Brand>
+                    <div className="nav-menu">
+                        <Nav className="mr-auto">
+                            <Nav.Link href={this.props.dashboardURL}>Dashboard</Nav.Link>
+                            <Nav.Link href={this.props.profileURL}>Profile</Nav.Link>
+                            <Nav.Link href={this.props.classesURL}>Classes</Nav.Link>
+                            <Nav.Link href='/'><div className="logout-icon"></div></Nav.Link>
+                        </Nav>
+                    </div>
+                </Navbar>
+            </div>
         )
     }
 }

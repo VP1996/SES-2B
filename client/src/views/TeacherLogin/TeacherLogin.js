@@ -41,7 +41,7 @@ const TeacherLogin = () => {
               <Form.Group controlId="formBasicCheckbox">
                 <Form.Check type="checkbox" label="Check me out" />
               </Form.Group>
-              <Button variant="primary" type="submit" className="login-btn">
+              <Button variant="primary" type="submit" className="login-btn" href="/teacher-dashboard">
                 Submit
   </Button>
             </Form>

@@ -20,4 +20,10 @@
   .navbar {
     justify-content: space-between;
   }
+  .logout-icon{
+    width: 25px;
+    height:25px;
+    background-size: cover;
+    background-image: url('../../images/logout.png');
+  }
 }
