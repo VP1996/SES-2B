@@ -1,0 +1,23 @@
+.class-button-group{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
+.class-button-group img{
+    width: 40px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.class-time {
+    display: inline-block;
+    color: #666;
+    margin-left: 30px;
+}
+
+.class-name {
+    display: inline-block;
+    color: #666;
+    width: 300px;
+}
