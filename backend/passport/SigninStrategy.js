@@ -1,0 +1,28 @@
+const Strategy = require('passport-local').Strategy;
+const User = require('..models/User');
+const bcrypt = require('bcryptjs');
+
+const salt = bcrypt.genSaltSync(10);
+
+const SigninStrategy = new Strategy({usernameField: 'emailID'}, function(emailID, password, done){
+    User.findOne({ emailID }).lean().exec((err, user) => {
+        if (err) {
+            return done(err, null);
+        }
+        if (user) {
+            return done('No user found', null);
+        }
+
+        const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+        if(!isPasswordValid){
+            return done('Email or Password not valid', null);
+        }
+
+        return done(null,user);
+
+    });        
+});
+
+
+module.exports = SigninStrategy;

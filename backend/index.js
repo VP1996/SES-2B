@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 
 //routes
 const users = require('./routes/api/user');
+const passport = require('./passport');
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.get('/', (req, res) => res.send('Backend'));
 
 //use Routes
 app.use('/api', users);
+app.use(passport.initialize());
+//app.use(passport.session());
 
 const PORT = process.env.PORT || 5000;
 

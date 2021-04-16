@@ -1,12 +1,46 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/Navbar/GreyNavBar";
 import Dropdown from "../../components/LoginUserTypeDropdown/Dropdown";
+import axios from 'axios';
 
 import './StudentLogin.scss'
 
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+
+/*state = {
+  email: '',
+  password: '',
+};
+
+handleSubmit = (event) => {
+  event.preventDefault();
+  const {email, password} = this.state;
+  axios({
+     url: "", //database link
+     method: "POST",
+     data: {
+      email,
+      password
+    }
+  })
+
+  .then(response => {
+      console.log('Data: ', response.data);
+  })
+  .catch(error => {
+      console.log('Error: ', error.response);
+  });
+};
+
+handleChange = event => {
+  const {name, value} = event.target;
+  this.setState({
+    [name]: value
+  })
+};*/
+
 
 const StudentLogin = () => {
   return (
@@ -21,15 +55,15 @@ const StudentLogin = () => {
               <Form className="student-form">
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" />
+                  <Form.Control type="email" placeholder="Enter email" /*onChange={this.handleChange}*/ />
                   <Form.Text className="text-muted">
                     We'll never share your email with anyone else.
-    </Form.Text>
+                  </Form.Text>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" />
+                  <Form.Control type="password" placeholder="Password" /*onChange={this.handleChange}*//>
                 </Form.Group>
                 <Form.Group controlId="formBasicCheckbox">
                   <Form.Check type="checkbox" label="Check me out" />
