@@ -14,7 +14,7 @@ const TeacherLogin = () => {
       <div className="signup-container">
       <Dropdown/>
         <div style={{display:'flex'}}>
-        <Card className="left-card">
+        <Card className="left-card shadow-lg">
         <Card.Body style={{ backgroundColor: '#62ABF3', borderRadius: '30px 0 0 30px' }}>
             <div className="right-content">
               <h4 style={{ marginLeft: '28%', color: 'white' }}> Not a Teacher?</h4>
@@ -25,25 +25,22 @@ const TeacherLogin = () => {
           </Card.Body>
 
         </Card>
-        <Card className="right-card">
+        <Card className="right-card shadow-lg">
         <Card.Body>
             <h3 style={{ margin: '10%', marginTop: '20%', marginBottom: '0px', font: 'Calibri' }}>Teacher Sign In</h3>
+          
             <Form className="student-form">
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
-    </Form.Text>
-              </Form.Group>
+                <Form.Group controlId="formBasicUsername">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control type="usernameName" placeholder="Enter Username" /*onChange={this.handleChange}*/ />
+                  
+                </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Password" />
               </Form.Group>
-              <Form.Group controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-              </Form.Group>
+              
               <Button variant="primary" type="submit" className="login-btn" href="/teacher/dashboard">
                 Submit
   </Button>

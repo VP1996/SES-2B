@@ -49,16 +49,14 @@ const StudentLogin = () => {
       <div className="signup-container">
           <Dropdown/>
         <div style={{display:'flex'}}>
-          <Card className="left-card">
+          <Card className="left-card shadow-lg">
             <Card.Body>
               <h3 style={{ margin: '10%', marginTop: '20%', marginBottom: '0px', font: 'Calibri' }}>Student Sign In</h3>
               <Form className="student-form">
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" /*onChange={this.handleChange}*/ />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                  </Form.Text>
+                <Form.Group controlId="formBasicUsername">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control type="usernameName" placeholder="Enter Username" /*onChange={this.handleChange}*/ />
+                  
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
@@ -74,7 +72,7 @@ const StudentLogin = () => {
               </Form>
             </Card.Body>
           </Card>
-          <Card className="right-card">
+          <Card className="right-card shadow-lg">
             <Card.Body style={{ backgroundColor: '#62ABF3', borderRadius: '0 30px 30px 0' }}>
               <div className="right-content">
                 <h4 style={{ marginLeft: '28%', color: 'white' }}> Not a Student?</h4>
