@@ -14,6 +14,8 @@ import AdminLogin from './views/AdminLogin/AdminLogin';
 import StudentDashboard from "./views/StudentDashboard/StudentDashboard";
 import TeacherDashboard from "./views/TeacherDashboard/TeacherDashboard";
 import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
+import AdminStudents from "./views/AdminHome/students";
+import AdminTeachers from "./views/AdminHome/teachers";
 import StudentClasses from "./views/StudentClasses/StudentClasses";
 import TeacherClasses from "./views/TeacherClasses/TeacherClasses";
 import StudentProfile from "./views/StudentProfile/StudentProfile";
@@ -35,6 +37,8 @@ const App = () => {
 					<Route path='/student/dashboard' exact component={StudentDashboard} />
 					<Route path='/teacher/dashboard' exact component={TeacherDashboard} />
 					<Route path='/admin/dashboard' exact component={AdminDashboard} />
+					<Route path='/admin/teachers' exact component={AdminTeachers} />
+					<Route path='/admin/students' exact component={AdminStudents} />
 					<Route path='/student/classes' exact component={StudentClasses} />
 					<Route path='/teacher/classes' exact component={TeacherClasses} />
 					<Route path='/student/profile' exact component={StudentProfile} />
