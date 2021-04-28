@@ -6,7 +6,7 @@ import './styles.css';
 import TextField from '@material-ui/core/TextField';
 
 const teacherColumns = [
-    {field: 'id', headerName: 'TeacherID', width: 130},
+    {field: 'id', headerName: 'Teacher ID', width: 130},
     {field: 'firstName', headerName: 'First name', width: 150},
     {field: 'lastName', headerName: 'Last name', width: 150},
     {field: 'faculty', headerName: 'Faculty', width: 150},
@@ -99,10 +99,15 @@ class AdminHome extends Component {
 
     search = (event) => {
         const value = event.target.value;
-        const filteredRows  = teacherRows.filter(row=>row.lastName.toLowerCase().includes(value.toLowerCase()) ||
+        const filteredRows = teacherRows.filter(row => row.lastName.toLowerCase().includes(value.toLowerCase()) ||
             row.firstName.toLowerCase().includes(value.toLowerCase()) ||
             row.email.toLowerCase().includes(value.toLowerCase()));
         this.setState({rows: filteredRows});
+    }
+
+    onRowClick = (param, event) => {
+        console.log(param, event);
+        alert("Will jump to teacher detail page with teacher id=" + param.row.id)
     }
 
     render() {
@@ -114,11 +119,17 @@ class AdminHome extends Component {
                         <h2 className='title'>
                             Teachers
                             <div className='searchField'>
-                                <TextField fullWidth label="Search" variant="outlined" className='searchField' onChange={this.search}/>
+                                <TextField fullWidth label="Search" variant="outlined" className='searchField'
+                                           onChange={this.search}/>
                             </div>
                         </h2>
                         <div className='TeacherContainer'>
-                            <DataGrid rows={this.state.rows} columns={teacherColumns} pageSize={5} checkboxSelection/>
+                            <DataGrid
+                                rows={this.state.rows}
+                                columns={teacherColumns}
+                                pageSize={5}
+                                onRowClick={this.onRowClick}
+                            />
                         </div>
                     </div>
                 </div>

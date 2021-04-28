@@ -42,6 +42,11 @@ class AdminHome extends Component {
         this.setState({rows: filteredRows});
     }
 
+    onRowClick = (param, event) => {
+        console.log(param, event);
+        alert("Will jump to student detail page with student id=" + param.row.id)
+    }
+
     render() {
         return (
             <div>
@@ -54,7 +59,12 @@ class AdminHome extends Component {
                         </div>
                     </h2>
                     <div className='studentContainer'>
-                        <DataGrid rows={this.state.rows} columns={studentColumns} pageSize={5} checkboxSelection/>
+                        <DataGrid
+                            rows={this.state.rows}
+                            columns={studentColumns}
+                            pageSize={5}
+                            onRowClick = {this.onRowClick}
+                        />
                     </div>
                 </div>
             </div>
