@@ -22,7 +22,8 @@ import StudentProfile from "./views/StudentProfile/StudentProfile";
 import TeacherProfile from "./views/TeacherProfile/TeacherProfile";
 import StudentEditProfile from "./views/StudentEditProfile/StudentEditProfile";
 import TeacherEditProfile from "./views/TeacherEditProfile/TeacherEditProfile";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 	return (
@@ -49,6 +50,11 @@ const App = () => {
 
 				</Switch>
 			</Router>
+			<ToastContainer
+				position="top-center"
+				autoClose={3000}
+				pauseOnHover
+			/>
 		</div>
 	);
 };
