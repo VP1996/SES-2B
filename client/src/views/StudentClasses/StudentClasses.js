@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import Scheduler, {SchedulerData, ViewTypes} from 'react-big-scheduler';
 import withDragDropContext from './withDnDContext';
 import 'react-big-scheduler/lib/css/style.css';
-import NavBar from '../../components/Navbar/Navbar';
+import NavBar from '../../components/Navbar/BlueNavBar';
+import Card from "react-bootstrap/Card";
+import ClassItem from "./ClassItem";
 
 const DemoData = {
     resources: [{
@@ -32,6 +34,54 @@ const DemoData = {
     ]
 }
 
+const classesMockData = [
+    {
+        classId: 1,
+        className: 'Application Programming',
+        startTime: '09:00',
+        endTime: '11:00',
+        flags: {
+            facial: false,
+            captcha: false,
+            pin: true,
+        }
+    },
+    {
+        classId: 2,
+        className: 'Internet Programming',
+        startTime: '11:00',
+        endTime: '13:00',
+        flags: {
+            facial: false,
+            captcha: false,
+            pin: false,
+        }
+    },
+    {
+        classId: 3,
+        className: 'Software Studio 3A',
+        startTime: '14:00',
+        endTime: '16:00',
+        flags: {
+            facial: false,
+            captcha: true,
+            pin: true,
+        }
+    },
+    {
+        classId: 4,
+        className: 'Database Fundamental',
+        startTime: '16:00',
+        endTime: '20:00',
+        flags: {
+            facial: false,
+            captcha: false,
+            pin: true,
+        }
+    },
+];
+
+
 class Student extends Component {
     constructor(props) {
         super(props);
@@ -54,20 +104,36 @@ class Student extends Component {
     render() {
         const {viewModel} = this.state;
         return (
-            <div className='container'>
-                <NavBar/>
-                <Scheduler schedulerData={viewModel}
-                           prevClick={this.prevClick}
-                           nextClick={this.nextClick}
-                           onSelectDate={this.onSelectDate}
-                           onViewChange={this.onViewChange}
-                           eventItemClick={this.eventClicked}
-                           viewEventClick={this.ops1}
-                           viewEventText="Ops 1"
-                           viewEvent2Text="Ops 2"
-                           viewEvent2Click={this.ops2}
-                           toggleExpandFunc={this.toggleExpandFunc}
-                />
+            <div className="dashboard-view">
+                <NavBar dashboardURL='/student/dashboard' profileURL='/student/profile' classesURL='/student/classes'/>
+                <Card style={{width: '900px', margin: 'auto'}}>
+                    <Card.Body>
+                        <Card.Title>Class Calendar</Card.Title>
+                        <Card.Text>
+                            <Scheduler schedulerData={viewModel}
+                                       prevClick={this.prevClick}
+                                       nextClick={this.nextClick}
+                                       onSelectDate={this.onSelectDate}
+                                       onViewChange={this.onViewChange}
+                                       eventItemClick={this.eventClicked}
+                                       viewEventClick={this.ops1}
+                                       viewEventText="Ops 1"
+                                       viewEvent2Text="Ops 2"
+                                       viewEvent2Click={this.ops2}
+                                       toggleExpandFunc={this.toggleExpandFunc}
+                            />
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+                <Card style={{width: '900px', margin: ' 40px auto', backgroundColor: '#f6f6f6'}}>
+                    <Card.Body>
+                        <Card.Title>Today's Classes</Card.Title>
+                        <Card.Text>
+                            {classesMockData.map(c => <ClassItem classId={c.classId} name={c.className} flags={c.flags} startTime={c.startTime} endTime={c.endTime}/>)}
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+
             </div>
 
         )

@@ -26,7 +26,7 @@ To start the client:
 
 To start the server:
 1. cd backend
-2. nodemon index.js
+2. nodemon students.js
 
 Client launches on localhost:3000, Server on localhost:4000
 ```
