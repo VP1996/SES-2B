@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import NavBar from "../../components/Navbar/Navbar";
+import NavBar from "../../components/Navbar/GreyNavBar";
 
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
@@ -9,18 +9,17 @@ import Col from "react-bootstrap/Col";
 
 const StudentLogin = () => {
   return (
-    <div className="container">
+    <div className="">
       <NavBar />
-
-      <h1 class="font-weight-bold">Admin log In</h1>
-      <container>
+      <div className="dashboard-view" style={{ width: '40%', margin: 'auto', marginTop: '50px'}}>
+      <h4>Admin log In</h4>
         <Row md={{ span: 6, offset: 6 }}>
           <Col>
             <Card bg={"light"} style={{ width: "18rem-" }}>
               <Card.Body>
                 <Form
-                  action="/handle-login"
-                  method="post"
+                  action="/admin/dashboard"
+                  method="get"
                   class="was-validated"
                 >
                   <Form.Group controlId="loginFormEmail">
@@ -47,9 +46,6 @@ const StudentLogin = () => {
                       required
                     />
                   </Form.Group>
-                  <Form.Group controlId="loginFormCheckbox">
-                    <Form.Check type="checkbox" label="ReCaptcha" required />
-                  </Form.Group>
                   <button type="submit" class="btn btn-outline-info">
                     Submit
                   </button>
@@ -58,7 +54,7 @@ const StudentLogin = () => {
             </Card>
           </Col>
         </Row>
-      </container>
+        </div>
       <br />
     </div>
   );
