@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import Scheduler, {SchedulerData, ViewTypes} from 'react-big-scheduler';
+import React, { Component } from 'react';
+import Scheduler, { SchedulerData, ViewTypes } from 'react-big-scheduler';
 import withDragDropContext from './withDnDContext';
 import 'react-big-scheduler/lib/css/style.css';
 import NavBar from '../../components/Navbar/BlueNavBar';
@@ -101,35 +101,35 @@ class Teacher extends Component {
     }
 
     render() {
-        const {viewModel} = this.state;
+        const { viewModel } = this.state;
         return (
             <div className="dashboard-view">
-                <NavBar dashboardURL='/teacher/dashboard' profileURL='/teacher/profile' classesURL='/teacher/classes'/>
-                <Card style={{width: '900px', margin: 'auto'}}>
+                <NavBar dashboardURL='/teacher/dashboard' profileURL='/teacher/profile' classesURL='/teacher/classes' />
+                <Card style={{ width: '900px', margin: 'auto' }}>
                     <Card.Body>
                         <Card.Title>Class Calendar</Card.Title>
                         <Card.Text>
                             <Scheduler schedulerData={viewModel}
-                                       prevClick={this.prevClick}
-                                       nextClick={this.nextClick}
-                                       onSelectDate={this.onSelectDate}
-                                       onViewChange={this.onViewChange}
-                                       eventItemClick={this.eventClicked}
-                                       viewEventClick={this.ops1}
-                                       viewEventText="Ops 1"
-                                       viewEvent2Text="Ops 2"
-                                       viewEvent2Click={this.ops2}
-                                       toggleExpandFunc={this.toggleExpandFunc}
+                                prevClick={this.prevClick}
+                                nextClick={this.nextClick}
+                                onSelectDate={this.onSelectDate}
+                                onViewChange={this.onViewChange}
+                                eventItemClick={this.eventClicked}
+                                viewEventClick={this.ops1}
+                                viewEventText="Ops 1"
+                                viewEvent2Text="Ops 2"
+                                viewEvent2Click={this.ops2}
+                                toggleExpandFunc={this.toggleExpandFunc}
                             />
                         </Card.Text>
                     </Card.Body>
                 </Card>
-                <Card style={{width: '900px', margin: ' 40px auto', backgroundColor: '#f6f6f6'}}>
+                <Card style={{ width: '900px', margin: ' 40px auto', backgroundColor: '#f6f6f6' }}>
                     <Card.Body>
                         <Card.Title>Today's Classes</Card.Title>
                         <Card.Text>
                             {classesMockData.map(c => <ClassItem classId={c.classId} name={c.className} flags={c.flags}
-                                                                 startTime={c.startTime} endTime={c.endTime}/>)}
+                                startTime={c.startTime} endTime={c.endTime} />)}
                         </Card.Text>
                     </Card.Body>
                 </Card>
