@@ -16,14 +16,29 @@ import cryptoRandomString from 'crypto-random-string';
 class ClassItem extends Component {
     constructor(props) {
         super(props);
+
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handlePicture = this.handlePicture.bind(this);
+
         this.state = {
-            show: false,
+            showModal: false,
             pin: '**********',
             pinOutput: ''
         };
     }
 
-    onGeneratePin = e => {
+    handleShow(id) {
+        this.setState({ showModal: id });
+    }
+    handleClose() {
+        this.setState({ showModal: null, pinEntered: '' });
+    }
+    handlePicture() {
+        //take picture using user webcam - use a package?
+        this.setState({ showModal: null, pinEntered: '', checkBoxChecked: false });// close modal
+    }
+    handleGeneratePin = e => {
         e.preventDefault();
         let string = cryptoRandomString({ length: 10 });
         this.setState({
@@ -38,11 +53,34 @@ class ClassItem extends Component {
                         <div className="class-name">{this.props.name}</div>
                         <div className="class-time">{this.props.startTime} - {this.props.endTime}</div>
                         <div className="class-button-group">
+                            {!this.props.flags.facial && <img src={CameraIcon} onClick={() => this.handleShow('facial-recog')} />}
+
+
+                            <Modal show={this.state.showModal === 'facial-recog'} onHide={this.handleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Facial Recognition</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>Take a photo and submit it to authenticate using the facial recognition method.</Modal.Body>
+                                <Modal.Footer style={{ justifyContent: 'space-between' }}>
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Checkbox aria-label="Checkbox for web cam use" onClick={() => this.setState({ checkBoxChecked: true })} />
+                                        <InputGroup.Text>Allow webcam use</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    {this.state.checkBoxChecked === true ?
+                                        (<Button variant="primary" onClick={this.handlePicture}>
+                                            Take a Picture!
+                                        </Button>) : (<Button variant="primary" disabled>
+                                            Take a Picture!
+                                        </Button>)}
+
+                                </Modal.Footer>
+                            </Modal>
+
                             {!this.props.flags.captcha && <img src={RoundArrowsIcon} onClick={() => alert('Go captcha page')} />}
                             {this.props.flags.captcha && <img src={GreenTickIcon} />}
-                            {!this.props.flags.pin && <img src={PinCodeIcon} onClick={() => this.setState({ show: true })} />}
+                            {!this.props.flags.pin && <img src={PinCodeIcon} onClick={() => this.handleShow('email-pin')} />}
 
-                            <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
+                            <Modal show={this.state.showModal === 'email-pin'} onHide={this.handleClose}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Generate a Pin</Modal.Title>
                                 </Modal.Header>
@@ -56,16 +94,16 @@ class ClassItem extends Component {
                                             value={this.state.pinOutput}
                                         />
                                         <InputGroup.Append>
-                                            <Button variant="outline-secondary" onClick={this.onGeneratePin}>Generate Pin</Button>
+                                            <Button variant="outline-secondary" onClick={this.handleGeneratePin}>Generate Pin</Button>
                                         </InputGroup.Append>
                                     </InputGroup>
 
 
 
-                                    <Button variant="secondary" onClick={() => this.setState({ show: false })}>
+                                    <Button variant="secondary" onClick={this.handleClose}>
                                         Email Class
           </Button>
-                                    <Button variant="primary" onClick={() => this.setState({ show: false, pinOutput: '' })}>
+                                    <Button variant="primary" onClick={this.handleClose}>
                                         Ok
           </Button>
                                 </Modal.Footer>
