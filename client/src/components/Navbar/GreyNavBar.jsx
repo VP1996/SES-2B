@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
 
 import './GreyNavBar.scss'
 
@@ -16,7 +17,8 @@ class GreyNavBar extends Component {
                     <Navbar.Brand href="/">[authenticateUTS]</Navbar.Brand>
                     <div className="nav-menu">
                         <Nav className="mr-auto">
-                            <Nav.Link href="/student/login">Login</Nav.Link>
+                            
+                            <Button variant="outline-primary" style={{width:'90px', borderRadius: '20px'}} href='/student/login'>Login</Button>
                         </Nav>
                     </div>
                 </Navbar>
