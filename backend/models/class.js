@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const student = require('./user')
-const teacher = require('./teacher')
 const Schema = mongoose.Schema;
+const AuthUsers = require('./authSchema');
 
 //class model will contain a nested document array of user model documents (students+teacher)
 const classSchema = new Schema({
@@ -9,16 +8,21 @@ const classSchema = new Schema({
         type: String,
         required : true
     },
-    students: [student],
-    teacher: [teacher],
+    classID: {
+        type: Number,
+        required: true,
+        index: true
+    }, 
     startTime: {
-        type: Date,
+        type: String,
         required: true
     },
-    finishTime: {
-        type: Date,
+    endTime: {
+        type: String,
         required: true
-    }
+    },
+    students: [AuthUsers],
+    teachers: [AuthUsers]
 }, {
         timestamps: true
 });

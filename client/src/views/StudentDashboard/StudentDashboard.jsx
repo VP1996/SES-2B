@@ -33,7 +33,7 @@ class StudentDasboard extends Component {
 
                     </Card.Text>
                             <div className="links">
-                                <Button className="profile-btn" size="large">Profile &gt;</Button>
+                                <Button className="profile-btn" size="large" href="/student/profile">Profile &gt;</Button>
                             </div>
                         </Card.Body>
                     </Card>
