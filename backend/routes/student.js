@@ -9,4 +9,12 @@ router
     .route('/login')
     .post(studentsController.login)
 
+router
+    .route('/edit')
+    .post(studentsController.update)
+
+router
+    .route('/delete')
+    .post(studentsController.delete)
+
 module.exports = router;

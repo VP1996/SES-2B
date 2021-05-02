@@ -9,6 +9,8 @@ module.exports = {
         const faculty = req.body.faculty;
         const email = req.body.email;
         const campusLocation = req.body.campusLocation;
+        const description = req.body.description;
+
 
         Teacher.findOne({ userid: userid })
             .then(teacher => {
@@ -27,7 +29,8 @@ module.exports = {
                         teachingYear,
                         faculty,
                         email,
-                        campusLocation
+                        campusLocation,
+                        description
                     });
 
                     //save user to collection
@@ -74,5 +77,58 @@ module.exports = {
                     err: 'error'
                 });
             })
+    },
+    update: function (req, res){
+        const userid = req.body.userid;
+        const password = req.body.password;
+        const name = req.body.name;
+        const teachingYear = req.body.teachingYear;
+        const faculty = req.body.faculty;
+        const email = req.body.email;
+        const campusLocation = req.body.campusLocation;
+        const description = req.body.description;
+
+        Teacher.updateOne({ userid: userid }, {
+            userid,
+            password,
+            name,
+            teachingYear,
+            faculty,
+            email,
+            campusLocation,
+            description
+        })
+            .then(teacher => {
+                return res.status(200).json({
+                    success: true,
+                    message: "Teacher successfully updated",
+                });
+            })
+            .catch(e => {
+                return res.status(404).json({
+                    success: false,
+                    message: "Teacher does not exist",
+                    err: 'error'
+                });
+            });
+
+
+    },
+    delete: function (req, res) {
+        const userid = req.body.userid;
+
+        Teacher.findOneAndDelete({ userid: userid })
+            .then(teacher => {
+                return res.status(200).json({
+                    success: true,
+                    message: "Teacher successfully deleted",
+                });
+            })
+            .catch(e => {
+                return res.status(404).json({
+                    success: false,
+                    message: "Teacher could not be deleted"
+                });
+            });
     }
 }
