@@ -25,7 +25,7 @@ class StudentProfile extends Component {
                         <div className="right-information">
                             <div className="heading">
                             <h3>Kate Wilson</h3>
-                                <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px' }}> Edit</Button>
+                                <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px' }} href="/student/profile-edit"> Edit</Button>
                                 </div>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies maximus mauris, id fringilla massa consequat et. Nam vitae massa scelerisque quam convallis cursus a non libero. Nullam aliquam vehicula porttitor. Proin in nibh nec magna dignissim vestibulum. Phasellus rutrum dolor facilisis justo cursus aliquet. In hac habitasse platea dictumst. Nulla semper mauris a justo vulputate, ac lacinia mauris bibendum. Nullam pretium pharetra nisi, ut tincidunt quam elementum eu.</p>
                             <div className="details">
