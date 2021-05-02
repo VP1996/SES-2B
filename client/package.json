@@ -9,6 +9,7 @@
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.1",
     "bootstrap": "^4.6.0",
+    "chalk": "^2.4.2",
     "crypto-random-string": "^4.0.0",
     "react": "^17.0.1",
     "react-big-scheduler": "0.2.6",
