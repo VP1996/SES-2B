@@ -65,7 +65,7 @@ class AdminHome extends Component {
     render() {
         return (
             <div>
-                <NavBar />
+                <NavBar  dashboardURL='/admin/teachers' profileURL='/admin/students' classesURL='/admin/classes' />
                 <div className='container mt-5'>
                     <h2 className='title'>
                         Classes
@@ -108,7 +108,7 @@ class AdminHome extends Component {
                             <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }}> Save</Button>
                         </Modal.Footer>
                     </Modal>
-                    <TextField fullWidth label="Search" variant="outlined" className='searchField' onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-10px' }} />
+                    <TextField fullWidth label="Search" variant="outlined" className='searchField' onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-25px' }} />
                     <div className='studentContainer'>
                         <DataGrid
                             rows={this.state.rows}

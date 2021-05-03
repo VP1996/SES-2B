@@ -130,7 +130,7 @@ class AdminHome extends Component {
     render() {
         return (
             <div>
-                <NavBar />
+                <NavBar dashboardURL='/admin/teachers' profileURL='/admin/students' classesURL='/admin/classes' />
                 <div className='container mt-5'>
                     <div>
                         <h2 className='title'>
@@ -185,7 +185,7 @@ class AdminHome extends Component {
                             </Modal.Footer>
                         </Modal>
                         <TextField fullWidth label="Search" variant="outlined" className='searchField'
-                            onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-10px' }} />
+                            onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-25px' }} />
                         <div className='TeacherContainer'>
                             <DataGrid
                                 rows={this.state.rows}
