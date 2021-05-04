@@ -18,7 +18,7 @@ const Modal = ({ handleClose, show }) => {
 				if (response.data == 'the user is a HUMAN :)') {
 					alert(' u Verified');
 				} else {
-					alert('Not verified');
+					alert('Recaptcha has expired please verify again');
 				}
 			});
 	}
