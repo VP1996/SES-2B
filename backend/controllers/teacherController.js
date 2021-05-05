@@ -2,14 +2,14 @@ const Teacher = require("../models/teacher");
 
 module.exports = {
     register: function (req, res) {
-        const userid = req.body.userid;
-        const password = req.body.password;
-        const name = req.body.name;
-        const teachingYear = req.body.teachingYear;
-        const faculty = req.body.faculty;
-        const email = req.body.email;
-        const campusLocation = req.body.campusLocation;
-        const description = req.body.description;
+        const userid = req.body.teacherID;
+        const password = req.body.teacherPassword;
+        const name = req.body.teacherName;
+        const teachingYear = req.body.teacherYear;
+        const faculty = req.body.teacherFaculty;
+        const email = req.body.teacherEmail;
+        const campusLocation = req.body.teacherLocation;
+        const description = req.body.teacherDescription;
 
 
         Teacher.findOne({ userid: userid })

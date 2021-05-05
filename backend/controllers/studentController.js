@@ -2,15 +2,15 @@ const Student = require("../models/student");
 
 module.exports = {
     register: function (req, res) {
-        const userid = req.body.userid;
-        const password = req.body.password;
-        const name = req.body.name;
-        const studyYear = req.body.studyYear;
-        const course = req.body.course;
-        const faculty = req.body.faculty;
-        const email = req.body.email;
-        const campusLocation = req.body.campusLocation;
-        const description = req.body.description;
+        const userid = req.body.studentID;
+        const password = req.body.studentPassword;
+        const name = req.body.studentName;
+        const studyYear = req.body.studentYear;
+        const course = req.body.studentCourse;
+        const faculty = req.body.studentFaculty;
+        const email = req.body.studentEmail;
+        const campusLocation = req.body.studentLocation;
+        const description = req.body.studentDescription;
 
         Student.findOne({ userid: userid })
             .then(student => {
