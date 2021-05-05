@@ -11,6 +11,10 @@ const classesRouter = require('./routes/class');
 
 const app = express();
 
+//stop cors error
+var cors = require('cors')
+app.use(cors())
+
 //connect database
 connectDB();
 
