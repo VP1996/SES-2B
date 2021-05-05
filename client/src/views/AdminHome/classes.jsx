@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
+import axios from 'axios';
 
 const classColoumns = [
     { field: 'id', headerName: 'ClassID', width: 200 },
@@ -39,7 +40,12 @@ class AdminHome extends Component {
 
         this.state = {
             rows: classRows,
-            showModal: false
+            showModal: false,
+            className: '',
+            classID: '',
+            classDescription: '',
+            classStart: '',
+            classEnd: ''
         }
 
     }
@@ -48,7 +54,46 @@ class AdminHome extends Component {
         this.setState({ showModal: id });
     }
     handleClose() {
-        this.setState({ showModal: null });
+        this.setState({
+            showModal: null,
+            className: '',
+            classID: '',
+            classDescription: '',
+            classStart: '',
+            classEnd: ''
+        });
+    }
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+    onSave = async (e) => {
+        e.preventDefault();
+        const {
+            className,
+            classID,
+            classDescription,
+            classStart,
+            classEnd
+        } = this.state;
+
+        const body = {
+            className,
+            classID,
+            classDescription,
+            classStart,
+            classEnd
+        }
+
+        try {
+            let response = await axios.post('http://localhost:5000/api/class/create', body)
+            console.log(response.data.message);
+            this.handleClose();
+        } catch (e) {
+            console.log("Could not create class");
+            console.log(e.message);
+
+        }
+
     }
 
     search = (event) => {
@@ -65,7 +110,7 @@ class AdminHome extends Component {
     render() {
         return (
             <div>
-                <NavBar  dashboardURL='/admin/teachers' profileURL='/admin/students' classesURL='/admin/classes' />
+                <NavBar dashboardURL='/admin/teachers' profileURL='/admin/students' classesURL='/admin/classes' />
                 <div className='container mt-5'>
                     <h2 className='title'>
                         Classes
@@ -79,33 +124,38 @@ class AdminHome extends Component {
                         <Modal.Body>
                             <Form>
                                 <Form.Row>
-                                    <Form.Group as={Col} controlId="formGridEmail">
+                                    <Form.Group as={Col}>
                                         <Form.Label>Class Name</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter name" />
+                                        <Form.Control type="text" name="className"
+                                            value={this.state.className} placeholder="Enter name" onChange={this.onChange}/>
                                     </Form.Group>
-                                    <Form.Group as={Col} controlId="formGridEmail">
+                                    <Form.Group as={Col}>
                                         <Form.Label>Class ID</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter class ID" />
+                                        <Form.Control type="text" name="classID"
+                                            value={this.state.classID}placeholder="Enter class ID" onChange={this.onChange}/>
                                     </Form.Group>
                                 </Form.Row>
-                                <Form.Group controlId="formGridEmail">
+                                <Form.Group>
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control as="textarea" placeholder="Enter any highlights, details and of class." style={{ height: '150px' }} />
+                                    <Form.Control as="textarea"  name="classDescription"
+                                            value={this.state.classDescription}placeholder="Enter any highlights, details and of class." style={{ height: '150px' }} onChange={this.onChange}/>
                                 </Form.Group>
                                 <Form.Row>
-                                    <Form.Group as={Col} controlId="formGridEmail">
+                                    <Form.Group as={Col}>
                                         <Form.Label>Start time</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter start time" />
+                                        <Form.Control type="text" name="classStart"
+                                            value={this.state.classStart}placeholder="Enter start time"  onChange={this.onChange}/>
                                     </Form.Group>
-                                    <Form.Group as={Col} controlId="formGridEmail">
+                                    <Form.Group as={Col}>
                                         <Form.Label>End time</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter end time" />
+                                        <Form.Control type="text" name="classEnd"
+                                            value={this.state.classEnd}placeholder="Enter end time" onChange={this.onChange}/>
                                     </Form.Group>
                                 </Form.Row>
                             </Form>
                         </Modal.Body>
                         <Modal.Footer style={{ float: 'right' }}>
-                            <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }}> Save</Button>
+                            <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }} onClick={this.onSave}> Save</Button>
                         </Modal.Footer>
                     </Modal>
                     <TextField fullWidth label="Search" variant="outlined" className='searchField' onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-25px' }} />
