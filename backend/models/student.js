@@ -5,7 +5,7 @@ const Auth = require('./authSchema');
 //creates a new schema for users which will represent each document added to the collection
 const studentSchema = new Schema({
     userid: {
-        type: String,
+        type: Number,
         required: true,
         unique: true,
         index: true // stops duplicates

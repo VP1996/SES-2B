@@ -3,7 +3,7 @@ const teachersController = require('../controllers/teacherController');
 
 router
     .route('/register') 
-    .get(teachersController.register);
+    .post(teachersController.register);
 
 router
     .route('/login')
