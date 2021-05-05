@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import 'react-big-scheduler/lib/css/style.css';
 import NavBar from '../../components/Navbar/BlueNavBar';
-import { DataGrid } from '@material-ui/data-grid';
+import {DataGrid} from '@material-ui/data-grid';
 import './styles.css';
 import TextField from '@material-ui/core/TextField';
 import Button from 'react-bootstrap/Button';
@@ -10,23 +10,23 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 
 const studentColumns = [
-    { field: 'id', headerName: 'StudentID', width: 130 },
-    { field: 'major', headerName: 'Major', width: 150 },
-    { field: 'firstName', headerName: 'First name', width: 150 },
-    { field: 'lastName', headerName: 'Last name', width: 150 },
-    { field: 'email', headerName: 'Email', width: 250 },
+    {field: 'id', headerName: 'StudentID', width: 130},
+    {field: 'major', headerName: 'Major', width: 150},
+    {field: 'firstName', headerName: 'First name', width: 150},
+    {field: 'lastName', headerName: 'Last name', width: 150},
+    {field: 'email', headerName: 'Email', width: 250},
 ];
 
 const studentRows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', major: 'FEIT', email: 'abc@test.com' },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', major: 'Business', email: 'abc@test.com' },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', major: 'Art', email: 'abc@test.com' },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', major: 'AI', email: 'abc@test.com' },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', major: 'Finance', email: 'abc@test.com' },
-    { id: 6, lastName: 'Melisandre', firstName: 'Jam', major: 'Bank', email: 'abc@test.com' },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', major: 'Analysis', email: 'abc@test.com' },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', major: 'Media', email: 'abc@test.com' },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', major: 'Communication', email: 'abc@test.com' },
+    {id: 1, lastName: 'Snow', firstName: 'Jon', major: 'FEIT', email: 'abc@test.com'},
+    {id: 2, lastName: 'Lannister', firstName: 'Cersei', major: 'Business', email: 'abc@test.com'},
+    {id: 3, lastName: 'Lannister', firstName: 'Jaime', major: 'Art', email: 'abc@test.com'},
+    {id: 4, lastName: 'Stark', firstName: 'Arya', major: 'AI', email: 'abc@test.com'},
+    {id: 5, lastName: 'Targaryen', firstName: 'Daenerys', major: 'Finance', email: 'abc@test.com'},
+    {id: 6, lastName: 'Melisandre', firstName: 'Jam', major: 'Bank', email: 'abc@test.com'},
+    {id: 7, lastName: 'Clifford', firstName: 'Ferrara', major: 'Analysis', email: 'abc@test.com'},
+    {id: 8, lastName: 'Frances', firstName: 'Rossini', major: 'Media', email: 'abc@test.com'},
+    {id: 9, lastName: 'Roxie', firstName: 'Harvey', major: 'Communication', email: 'abc@test.com'},
 ];
 
 class AdminHome extends Component {
@@ -43,11 +43,16 @@ class AdminHome extends Component {
 
     }
 
-    handleShow(id) {
-        this.setState({ showModal: id });
+    componentDidMount() {
+        fetch('api/student/findAll');
     }
+
+    handleShow(id) {
+        this.setState({showModal: id});
+    }
+
     handleClose() {
-        this.setState({ showModal: null });
+        this.setState({showModal: null});
     }
 
     search = (event) => {
@@ -55,7 +60,33 @@ class AdminHome extends Component {
         const filteredRows = studentRows.filter(row => row.lastName.toLowerCase().includes(value.toLowerCase()) ||
             row.firstName.toLowerCase().includes(value.toLowerCase()) ||
             row.email.toLowerCase().includes(value.toLowerCase()));
-        this.setState({ rows: filteredRows });
+        this.setState({rows: filteredRows});
+    }
+
+    createStudent = (event) => {
+        event.preventDefault();
+        /*
+        *  const userid = req.body.userid;
+        const password = req.body.password;
+        const name = req.body.name;
+        const studyYear = req.body.studyYear;
+        const course = req.body.course;
+        const faculty = req.body.faculty;
+        const email = req.body.email;
+        const campusLocation = req.body.campusLocation;
+        const description = req.body.description;
+        * */
+        const postData = {
+            userid: this.state.studentId,
+            password: this.state.password,
+            name: this.state.name,
+            studyYear: this.state.studyYear,
+            course: this.state.course,
+            email: this.state.email,
+            campusLocation: this.state.location,
+            description: this.state.description,
+        }
+        fetch("/api/student/findAll");
     }
 
     onRowClick = (param, event) => {
@@ -66,60 +97,71 @@ class AdminHome extends Component {
     render() {
         return (
             <div>
-                <NavBar dashboardURL='/admin/teachers' profileURL='/admin/students' classesURL='/admin/classes' />
+                <NavBar dashboardURL='/admin/teachers' profileURL='/admin/students' classesURL='/admin/classes'/>
                 <div className='container mt-5'>
                     <h2 className='title'>
                         Students
                     </h2>
-                    <Button variant="success" size="sm" onClick={() => this.handleShow('create-student')}>Add a new Student</Button>
-                    <Modal show={this.state.showModal === 'create-student'} onHide={this.handleClose} >
-                        <Modal.Header closeButton>
-                            <Modal.Title>Create a new student profile</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
+                    <Button variant="success" size="sm" onClick={() => this.handleShow('create-student')}>Add a new
+                        Student</Button>
+                    <Modal show={this.state.showModal === 'create-student'} onHide={this.handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Create a new student profile</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter full name" />
+                                        <Form.Control type="text" placeholder="Enter full name" name="name" onChange={(event) => this.setState({name: event.target.value})}/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Student ID</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter student ID" />
+                                        <Form.Control type="text" placeholder="Enter student ID" name="studentId" onChange={(event) => this.setState({studentId: event.target.value})}/>
+                                    </Form.Group>
+                                    <Form.Group as={Col} controlId="formGridEmail">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control type="password" placeholder="Enter Password" name="password" onChange={(event) => this.setState({password: event.target.value})}/>
                                     </Form.Group>
                                 </Form.Row>
                                 <Form.Group controlId="formGridEmail">
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control as="textarea" placeholder="Enter any highlights, details and of student." style={{ height: '150px' }} />
+                                    <Form.Control as="textarea"
+                                                  placeholder="Enter any highlights, details and of student."
+                                                  style={{height: '150px'}} name="description" onChange={(event) => this.setState({description: event.target.value})}/>
                                 </Form.Group>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Year of Study</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter year of study" />
+                                        <Form.Control type="text" placeholder="Enter year of study" name="yearOfStudy" onChange={(event) => this.setState({yearOfStudy: event.target.value})}/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Course</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter your course" />
+                                        <Form.Control type="text" placeholder="Enter your course" name="course" onChange={(event) => this.setState({course: event.target.value})}/>
                                     </Form.Group>
                                 </Form.Row>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter email" />
+                                        <Form.Control type="text" placeholder="Enter email" name="email" onChange={(event) => this.setState({email: event.target.value})}/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Location</Form.Label>
-                                        <Form.Control type="email" placeholder="Enter study campus" />
+                                        <Form.Control type="email" placeholder="Enter study campus" name="location" onChange={(event) => this.setState({location: event.target.value})}/>
                                     </Form.Group>
                                 </Form.Row>
-                            </Form>
-                             
-                        </Modal.Body>
-                        <Modal.Footer style={{ float: 'right' }}>
-                        <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }}> Save</Button>
-                        </Modal.Footer>
+                            </Modal.Body>
+                            <Modal.Footer style={{float: 'right'}}>
+                                <Button
+                                    onClick={this.createStudent}
+                                    variant="outline-danger" style={{
+                                    borderRadius: '20px',
+                                    width: '100px',
+                                    backgroundColor: '#FED8B1'
+                                }}> Save</Button>
+                            </Modal.Footer>
                     </Modal>
-                    <TextField fullWidth label="Search" variant="outlined" className='searchField' onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-25px' }} />
+                    <TextField fullWidth label="Search" variant="outlined" className='searchField'
+                               onChange={this.search} style={{width: '400px', float: 'right', marginTop: '-25px'}}/>
                     <div className='studentContainer'>
                         <DataGrid
                             rows={this.state.rows}
