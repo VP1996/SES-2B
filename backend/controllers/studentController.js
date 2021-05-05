@@ -79,6 +79,20 @@ module.exports = {
                 });
             })
     },
+
+    findAll: function (req, res) {
+      Student.find()
+            .then(students => {
+                return res.status(200).json({
+                    students
+                });
+            })
+            .catch(e => {
+                return res.status(500).json({
+                    students: []
+                });
+            })
+    },
     update: function (req, res){
         const userid = req.body.userid;
         const password = req.body.password;
