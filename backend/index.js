@@ -6,8 +6,15 @@ const connectDB = require('./config/db');
 //routes
 const users = require('./routes/api/user');
 const passport = require('./passport');
+const studentsRouter = require('./routes/student');
+const teachersRouter = require('./routes/teacher');
+const classesRouter = require('./routes/class');
 
 const app = express();
+
+//stop cors error
+var cors = require('cors')
+app.use(cors())
 
 //connect database
 connectDB();
@@ -21,6 +28,10 @@ app.get('/', (req, res) => res.send('Backend'));
 app.use('/api', users);
 app.use(passport.initialize());
 //app.use(passport.session());
+app.use('/api/student',studentsRouter);
+app.use('/api/teacher',teachersRouter);
+app.use('/api/class',classesRouter);
+
 
 const PORT = process.env.PORT || 5000;
 
