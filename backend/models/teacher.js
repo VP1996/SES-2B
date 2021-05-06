@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Auth = require('./authSchema');
+const bcrypt = require('bcrypt')
 
 //creates a new schema for users which will represent each document added to the collection
 const teacherSchema = new Schema({
@@ -42,6 +43,17 @@ const teacherSchema = new Schema({
 
 }
 );
+
+teacherSchema.pre('save', async function (next){
+    try {
+      const salt = await bcrypt.genSalt(10)
+      const hashedPassword = await bcrypt.hash(this.password, salt)
+      this.password = hashedPassword
+      next()
+    } catch (error) {
+      next(error)
+    }
+  })
 
 const Teacher = mongoose.model('Teacher', teacherSchema);
 
