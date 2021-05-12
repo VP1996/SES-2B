@@ -78,6 +78,21 @@ module.exports = {
                 });
             })
     },
+
+    findAll: function (req, res) {
+        Teacher.find()
+            .then(teachers => {
+                return res.status(200).json({
+                    teachers
+                });
+            })
+            .catch(e => {
+                return res.status(500).json({
+                    teachers: []
+                });
+            })
+    },
+
     update: function (req, res){
         const userid = req.body.userid;
         const password = req.body.password;

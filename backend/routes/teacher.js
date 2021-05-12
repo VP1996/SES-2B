@@ -2,6 +2,10 @@ const router = require('express').Router();
 const teachersController = require('../controllers/teacherController');
 
 router
+    .route('/all')
+    .get(teachersController.findAll);
+
+router
     .route('/register') 
     .post(teachersController.register);
 

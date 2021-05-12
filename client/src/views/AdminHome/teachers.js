@@ -11,88 +11,15 @@ import Col from 'react-bootstrap/Col'
 import axios from 'axios';
 
 const teacherColumns = [
-    { field: 'id', headerName: 'Teacher ID', width: 130 },
-    { field: 'firstName', headerName: 'First name', width: 150 },
-    { field: 'lastName', headerName: 'Last name', width: 150 },
+    { field: 'userid', headerName: 'Teacher ID', width: 130 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'teachingYear', headerName: 'TeachYear', width: 150 },
     { field: 'faculty', headerName: 'Faculty', width: 150 },
-    { field: 'position', headerName: 'Position', width: 150 },
+    { field: 'campusLocation', headerName: 'Campus', width: 150 },
     { field: 'email', headerName: 'Email', width: 250 },
 ];
 
-const teacherRows = [
-    {
-        id: 1,
-        lastName: 'Snow',
-        firstName: 'Jon',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'teacherabc@test.com'
-    },
-    {
-        id: 2,
-        lastName: 'Lannister',
-        firstName: 'Cersei',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 3,
-        lastName: 'Lannister',
-        firstName: 'Jaime',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 4,
-        lastName: 'Stark',
-        firstName: 'Arya',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 5,
-        lastName: 'Targaryen',
-        firstName: 'Daenerys',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 6,
-        lastName: 'Melisandre',
-        firstName: 'abc',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 7,
-        lastName: 'Clifford',
-        firstName: 'Ferrara',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 8,
-        lastName: 'Frances',
-        firstName: 'Rossini',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-    {
-        id: 9,
-        lastName: 'Roxie',
-        firstName: 'Harvey',
-        faculty: 'Communication',
-        position: "Professor",
-        email: 'abc@test.com'
-    },
-];
+
 
 class AdminHome extends Component {
     constructor(props) {
@@ -102,7 +29,7 @@ class AdminHome extends Component {
         this.handleClose = this.handleClose.bind(this);
 
         this.state = {
-            rows: teacherRows,
+            rows: [],
             showModal: false,
             teacherName: '',
             teacherID: '',
@@ -111,12 +38,40 @@ class AdminHome extends Component {
             teacherFaculty: '',
             teacherEmail: '',
             teacherLocation: '',
-            teacherPassword: ''
+            teacherPassword: '',
+            filteredRows: [],
         }
     }
 
-    handleShow(id) {
-        this.setState({ showModal: id });
+    handleShow(id, data) {
+        if(data != null){
+            console.log(data);
+            this.setState({
+                teacherName: data.name,
+                teacherID: data.userid,
+                teacherDescription: data.description,
+                teacherYear: data.teachingYear,
+                teacherFaculty: data.faculty,
+                teacherEmail: data.email,
+                teacherLocation: data.campusLocation,
+                teacherPassword: data.password,
+                showModal: id,
+                isEdit: true,
+            });
+        } else {
+            this.setState({
+                teacherName: '',
+                teacherID: '',
+                teacherDescription: '',
+                teacherYear: '',
+                teacherFaculty: '',
+                teacherEmail: '',
+                teacherLocation: '',
+                teacherPassword: '',
+                showModal: id,
+                isEdit: true,
+            });
+        }
     }
     handleClose() {
         this.setState({
@@ -166,17 +121,23 @@ class AdminHome extends Component {
         }
     }
 
+    componentDidMount() {
+        axios.get('http://localhost:5000/api/teacher/all').then((data)=>{
+            let rows = data.data.teachers;
+            rows.forEach(r=>r.id=r._id);
+            this.setState({rows, filteredRows: rows})
+        });
+    }
+
     search = (event) => {
         const value = event.target.value;
-        const filteredRows = teacherRows.filter(row => row.lastName.toLowerCase().includes(value.toLowerCase()) ||
-            row.firstName.toLowerCase().includes(value.toLowerCase()) ||
-            row.email.toLowerCase().includes(value.toLowerCase()));
-        this.setState({ rows: filteredRows });
+        const filteredRows = this.state.rows.filter(row => JSON.stringify(row).toLowerCase().includes(value.toLowerCase()));
+        this.setState({ filteredRows });
     }
 
     onRowClick = (param, event) => {
         console.log(param, event);
-        alert("Will jump to teacher detail page with teacher id=" + param.row.id)
+        this.handleShow('create-teacher', param.row);
     }
 
     render() {
@@ -191,7 +152,7 @@ class AdminHome extends Component {
                         <Button variant="success" size="sm" onClick={() => this.handleShow('create-teacher')}>Add a new Teacher</Button>
                         <Modal show={this.state.showModal === 'create-teacher'} onHide={this.handleClose} >
                             <Modal.Header closeButton>
-                                <Modal.Title>Create a new teacher profile</Modal.Title>
+                                <Modal.Title>{this.state.isEdit?'Update Teacher':'Create a new teacher profile'}</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <Form>
@@ -237,6 +198,7 @@ class AdminHome extends Component {
 
                             </Modal.Body>
                             <Modal.Footer style={{ float: 'right' }}>
+                                {this.state.isEdit ? <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: 'red', color: 'white' }} onClick={this.onSave}>Delete</Button>: ''}
                                 <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }} onClick={this.onSave}> Save</Button>
                             </Modal.Footer>
                         </Modal>
@@ -244,7 +206,7 @@ class AdminHome extends Component {
                             onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-25px' }} />
                         <div className='TeacherContainer'>
                             <DataGrid
-                                rows={this.state.rows}
+                                rows={this.state.filteredRows}
                                 columns={teacherColumns}
                                 pageSize={5}
                                 onRowClick={this.onRowClick}

@@ -11,23 +11,12 @@ import Col from 'react-bootstrap/Col'
 import axios from 'axios';
 
 const studentColumns = [
-    { field: 'id', headerName: 'StudentID', width: 130 },
-    { field: 'major', headerName: 'Major', width: 150 },
-    { field: 'firstName', headerName: 'First name', width: 150 },
-    { field: 'lastName', headerName: 'Last name', width: 150 },
+    { field: 'userid', headerName: 'StudentID', width: 130 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'course', headerName: 'Course', width: 180 },
+    { field: 'faculty', headerName: 'Faculty', width: 150 },
+    { field: 'campusLocation', headerName: 'Campus', width: 180 },
     { field: 'email', headerName: 'Email', width: 250 },
-];
-
-const studentRows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', major: 'FEIT', email: 'abc@test.com' },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', major: 'Business', email: 'abc@test.com' },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', major: 'Art', email: 'abc@test.com' },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', major: 'AI', email: 'abc@test.com' },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', major: 'Finance', email: 'abc@test.com' },
-    { id: 6, lastName: 'Melisandre', firstName: 'Jam', major: 'Bank', email: 'abc@test.com' },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', major: 'Analysis', email: 'abc@test.com' },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', major: 'Media', email: 'abc@test.com' },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', major: 'Communication', email: 'abc@test.com' },
 ];
 
 class AdminHome extends Component {
@@ -38,7 +27,6 @@ class AdminHome extends Component {
         this.handleClose = this.handleClose.bind(this);
 
         this.state = {
-            rows: studentRows,
             showModal: false,
             studentName: '',
             studentID: '',
@@ -48,17 +36,50 @@ class AdminHome extends Component {
             studentEmail: '',
             studentLocation: '',
             studentFaculty: '',
-            studentPassword: ''
+            studentPassword: '',
+            rows: [],
+            filteredRows: [],
         }
 
     }
 
     componentDidMount() {
-        fetch('api/student/findAll');
+        axios.get('http://localhost:5000/api/student/all').then((data)=>{
+            let rows = data.data.students;
+            rows.forEach(r=>r.id=r._id);
+            this.setState({rows, filteredRows: rows})
+        });
     }
 
-    handleShow(id) {
-        this.setState({ showModal: id });
+    handleShow(id, data) {
+        if(data != null){
+            this.setState({
+                studentName: data.name,
+                studentID: data.userid,
+                studentDescription: data.description,
+                studentYear: data.studyYear,
+                studentCourse: data.course,
+                studentEmail: data.email,
+                studentLocation: data.campusLocation,
+                studentFaculty: data.faculty,
+                studentPassword: data.password,
+                showModal: id,
+                isEdit: true,
+            });
+        } else {
+            this.setState({
+                studentName: '',
+                studentID: '',
+                studentDescription: '',
+                studentYear: '',
+                studentFaculty: '',
+                studentEmail: '',
+                studentLocation: '',
+                studentPassword: '',
+                showModal: id,
+                isEdit: false,
+            });
+        }
     }
 
     handleClose() {
@@ -89,15 +110,13 @@ class AdminHome extends Component {
 
     search = (event) => {
         const value = event.target.value;
-        const filteredRows = studentRows.filter(row => row.lastName.toLowerCase().includes(value.toLowerCase()) ||
-            row.firstName.toLowerCase().includes(value.toLowerCase()) ||
-            row.email.toLowerCase().includes(value.toLowerCase()));
-        this.setState({ rows: filteredRows });
+        const filteredRows = this.state.rows.filter(row => JSON.stringify(row).toLowerCase().includes(value.toLowerCase()));
+        this.setState({ filteredRows });
     }
 
     onRowClick = (param, event) => {
         console.log(param, event);
-        alert("Will jump to student detail page with student id=" + param.row.id)
+        this.handleShow('create-student', param.row);
     }
 
     render() {
@@ -112,7 +131,7 @@ class AdminHome extends Component {
                         Student</Button>
                     <Modal show={this.state.showModal === 'create-student'} onHide={this.handleClose}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Create a new student profile</Modal.Title>
+                            <Modal.Title>{this.state.isEdit?'Update Student':'Create a new student profile'}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
@@ -172,6 +191,7 @@ class AdminHome extends Component {
                             </Form>
                         </Modal.Body>
                     <Modal.Footer style={{ float: 'right' }}>
+                        {this.state.isEdit ? <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: 'red', color: 'white' }} onClick={this.onSave}>Delete</Button>: ''}
                         <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }} onClick={this.onSave}>Save</Button>
                     </Modal.Footer>
                     </Modal>
@@ -179,7 +199,7 @@ class AdminHome extends Component {
                         onChange={this.search} style={{ width: '400px', float: 'right', marginTop: '-25px' }} />
                     <div className='studentContainer'>
                         <DataGrid
-                            rows={this.state.rows}
+                            rows={this.state.filteredRows}
                             columns={studentColumns}
                             pageSize={5}
                             onRowClick={this.onRowClick}
