@@ -7,12 +7,14 @@ const studentSchema = new Schema({
     userid: {
         type: Number,
         required: true,
+        trim: true,
         unique: true,
         index: true // stops duplicates
     },
     password: {
         type: String,
         required: true,
+        trim: true,
         minlength: 6
     },
     name: {

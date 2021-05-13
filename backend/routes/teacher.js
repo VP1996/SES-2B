@@ -21,4 +21,8 @@ router
     .route('/delete')
     .post(teachersController.delete)
 
+router
+    .route('/verifyToken') // to verify token from frontend - used to protect fronted routes.
+    .get(teachersController.verifyToken);
+
 module.exports = router;

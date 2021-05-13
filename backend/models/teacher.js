@@ -7,11 +7,13 @@ const teacherSchema = new Schema({
     userid: {
         type: Number,
         required: true,
+        trim: true,
         unique: true,
         index: true // stops duplicates
     },
     password: {
         type: String,
+        trim: true,
         required: true,
         minlength: 6
     },
