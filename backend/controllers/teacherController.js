@@ -1,6 +1,31 @@
 const Teacher = require("../models/teacher");
+const jwt = require('jsonwebtoken');
 
 module.exports = {
+    verifyToken: function (req, res) {
+        const authorization = req.headers.authorization;
+        if (authorization && authorization.split(' ')[0] === 'Bearer') {
+            // use jwt verify to check the token passsed through in position 1 of array made using split.
+            jwt.verify(req.headers.authorization.split(' ')[1], process.env.TEACHERSECRET, (err, decoded) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: "Unauthorized"
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        message: "Authorized"
+                    });
+                }
+            })
+        } else {
+            res.json({
+                success: false,
+                message: "No token provided"
+            });
+        }
+    },
     register: function (req, res) {
         const userid = req.body.teacherID;
         const password = req.body.teacherPassword;
@@ -52,8 +77,15 @@ module.exports = {
 
     },
     login: function (req, res) {
-        const userid = req.body.userid;
+        const userid = req.body.teacherID;
         const password = req.body.password;
+
+        if (!userid || !password) {
+            return res.status(401).json({
+                success: false,
+                message: "All fields are required"
+            });
+        }
 
         Teacher.findOne({ userid: userid })
             .then(teacher => {
@@ -64,10 +96,31 @@ module.exports = {
                     });
                 }
                 else {
-                    return res.status(200).json({
-                        success: true,
-                        message: "User exists and is logged in"
-                    });
+                    //if passwords match then create a payload for the JWT token
+                    if (teacher.password == password) {
+                        const payload = {
+                            id: teacher.id,
+                            userid: teacher.userid
+                        }
+                        // return token created after payload is signed
+                        jwt.sign(
+                            payload,
+                            process.env.TEACHERSECRET,
+                            { expiresIn: 604800 },
+                            (err, token) => {
+                                res.json({
+                                    success: true,
+                                    userid: teacher.userid,
+                                    token: "Bearer " + token
+                                });
+                            }
+                        );
+                    } else {
+                        res.json({
+                            success: false,
+                            message: "incorrect password"
+                        });
+                    }
                 }
             })
             .catch(e => {
