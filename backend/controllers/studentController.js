@@ -1,6 +1,31 @@
 const Student = require("../models/student");
+const jwt = require('jsonwebtoken');
 
-module.exports = {
+module.exports = {//function to verify token from client to then protect frontend routes. 
+    verifyToken: function(req, res) {
+        const authorization = req.headers.authorization;
+        if (authorization && authorization.split(' ')[0] === 'Bearer') {
+            // use jwt verify to check the token passsed through in position 1 of array made using split.
+            jwt.verify(req.headers.authorization.split(' ')[1], process.env.STUDENTSECRET, (err,decoded)=> {
+                if(err){
+                    res.json({
+                        success: false,
+                        message: "Unauthorized"
+                    });
+                } else {
+                    res.json({
+                        success: true,
+                        message: "Authorized"
+                    });
+                }
+            })
+        } else { 
+            res.json({
+                success: false,
+                message: "No token provided"
+            });
+        }
+    },
     register: function (req, res) {
         const userid = req.body.studentID;
         const password = req.body.studentPassword;
@@ -53,8 +78,15 @@ module.exports = {
 
     },
     login: function (req, res) {
-        const userid = req.body.userid;
+        const userid = req.body.studentID;
         const password = req.body.password;
+
+        if (!userid || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required"
+            });
+        }
 
         Student.findOne({ userid: userid })
             .then(student => {
@@ -65,10 +97,32 @@ module.exports = {
                     });
                 }
                 else {
-                    return res.status(200).json({
-                        success: true,
-                        message: "User exists and is logged in"
-                    });
+                    //if passwords match then create a payload for the JWT token
+                    if (student.password == password) {
+                        const payload = {
+                            id: student.id,
+                            userid: student.userid
+                        }
+                        // return token created after payload is signed
+                        jwt.sign(
+                            payload,
+                            process.env.STUDENTSECRET,
+                            { expiresIn: 604800 },
+                            (err, token) => {
+                                res.json({
+                                    success: true,
+                                    userid: student.userid,
+                                    token: "Bearer " + token,
+                                    message: "Successful login!"
+                                });
+                            }
+                        );
+                    } else {
+                        res.json({
+                            success: false,
+                            message: "incorrect password"
+                        });
+                    }
                 }
             })
             .catch(e => {
