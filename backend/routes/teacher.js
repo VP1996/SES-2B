@@ -6,6 +6,10 @@ router
     .get(teachersController.findAll);
 
 router
+    .route('/profile')
+    .post(teachersController.getTeacher);
+
+router
     .route('/register') 
     .post(teachersController.register);
 

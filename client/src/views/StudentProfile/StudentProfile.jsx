@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 
 import './StudentProfile.scss';
 import 'react-calendar/dist/Calendar.css';
@@ -11,6 +12,27 @@ import NavBar from '../../components/Navbar/BlueNavBar';
 class StudentProfile extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            student: ''
+        }
+    }
+
+    componentDidMount() {
+        this.fetchUserProfile();
+    }
+
+    fetchUserProfile = async () => {
+        const body = {
+            studentID: JSON.parse(localStorage.getItem("studentData")).userid
+        }
+        try {
+            const response = await axios.post("http://localhost:5000/api/student/profile", body)
+            this.setState({ student: response.data })
+            console.log(this.state);
+        } catch (e) {
+            console.log(e);
+        }  
     }
 
     render() {
@@ -24,15 +46,15 @@ class StudentProfile extends Component {
                         <div className="profile-img"></div>
                         <div className="right-information">
                             <div className="heading">
-                            <h3>Kate Wilson</h3>
+                            <h3>{this.state.student.name}</h3>
                                 <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px' }} href="/student/profile-edit"> Edit</Button>
                                 </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies maximus mauris, id fringilla massa consequat et. Nam vitae massa scelerisque quam convallis cursus a non libero. Nullam aliquam vehicula porttitor. Proin in nibh nec magna dignissim vestibulum. Phasellus rutrum dolor facilisis justo cursus aliquet. In hac habitasse platea dictumst. Nulla semper mauris a justo vulputate, ac lacinia mauris bibendum. Nullam pretium pharetra nisi, ut tincidunt quam elementum eu.</p>
+                            <p>{this.state.student.description}</p>
                             <div className="details">
-                                <h6> | Sydney, Australia |</h6>
-                                <h6> | katewilson@student.uts.edu.au |</h6>
-                                <h6>| Student for 1 year |</h6>
-                                <h6>| 152560 |</h6>
+                                <h6> | {this.state.student.campusLocation}, Australia |</h6>
+                                <h6> | {this.state.student.email} |</h6>
+                                <h6>| Study Year: {this.state.student.studyYear} |</h6>
+                                <h6>| {this.state.student.userid} |</h6>
                             </div>
                         </div>
 

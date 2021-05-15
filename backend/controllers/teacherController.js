@@ -136,7 +136,19 @@ module.exports = {
                 });
             })
     },
-
+    getTeacher: async function (req, res) {
+        try {
+            let teacher = await Teacher.findOne({ userid: req.body.teacherID }, {userid: 1, name: 1, teachingYear: 1, faculty: 1, email: 1, campusLocation: 1, description: 1})
+            if (teacher) {
+                res.status(200).json(teacher);
+            }
+        } catch (e) {
+            res.status(400).json({
+                succes: false,
+                response: "Could not find user."
+            })
+        }
+    },
     findAll: function (req, res) {
         Teacher.find()
             .then(teachers => {

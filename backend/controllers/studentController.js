@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 module.exports = {//function to verify token from client to then protect frontend routes. 
-    verifyToken: function(req, res) {
+    verifyToken: function (req, res) {
         const authorization = req.headers.authorization;
         if (authorization && authorization.split(' ')[0] === 'Bearer') {
             // use jwt verify to check the token passsed through in position 1 of array made using split.
-            jwt.verify(req.headers.authorization.split(' ')[1], process.env.STUDENTSECRET, (err,decoded)=> {
-                if(err){
+            jwt.verify(req.headers.authorization.split(' ')[1], process.env.STUDENTSECRET, (err, decoded) => {
+                if (err) {
                     res.json({
                         success: false,
                         message: "Unauthorized"
@@ -20,7 +20,7 @@ module.exports = {//function to verify token from client to then protect fronten
                     });
                 }
             })
-        } else { 
+        } else {
             res.json({
                 success: false,
                 message: "No token provided"
@@ -137,9 +137,21 @@ module.exports = {//function to verify token from client to then protect fronten
                 });
             })
     },
-
+    getStudent: async function (req, res) {
+        try {
+            let student = await Student.findOne({ userid: req.body.studentID }, {userid: 1, name: 1, studyYear: 1, course : 1, faculty: 1, email: 1, campusLocation: 1, description: 1})
+            if (student) {
+                res.status(200).json(student);
+            }
+        } catch (e) {
+            res.status(400).json({
+                succes: false,
+                response: "Could not find user."
+            })
+        }
+    },
     findAll: function (req, res) {
-      Student.find()
+        Student.find()
             .then(students => {
                 return res.status(200).json({
                     students
@@ -151,7 +163,7 @@ module.exports = {//function to verify token from client to then protect fronten
                 });
             })
     },
-    update: function (req, res){
+    update: function (req, res) {
         const userid = req.body.userid;
         const password = req.body.password;
         const name = req.body.name;

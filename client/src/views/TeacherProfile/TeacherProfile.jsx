@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 
 import './TeacherProfile.scss';
 import 'react-calendar/dist/Calendar.css';
@@ -12,12 +13,33 @@ import NavBar from '../../components/Navbar/BlueNavBar';
 class TeacherProfile extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            teacher: ''
+        }
+    }
+
+    componentDidMount() {
+        this.fetchUserProfile();
+    }
+
+    fetchUserProfile = async () => {
+        const body = {
+            teacherID: JSON.parse(localStorage.getItem("teacherData")).userid
+        }
+        try {
+            const response = await axios.post("http://localhost:5000/api/teacher/profile", body)
+            this.setState({ teacher: response.data })
+            console.log(this.state);
+        } catch (e) {
+            console.log(e);
+        }  
     }
 
     render() {
         return (
             <div className="profile-view">
-                <NavBar dashboardURL='/student/dashboard' profileURL='/student/profile' classesURL='/student/classes' />
+                <NavBar dashboardURL='/teacher/dashboard' profileURL='/teacher/profile' classesURL='/teacher/classes' />
                 <h4 style={{ paddingTop: '20px' }}>Teacher Profile</h4>
                 <Card className="profile-container">
 
@@ -25,15 +47,15 @@ class TeacherProfile extends Component {
                         <div className="profile-img"></div>
                         <div className="right-information">
                             <div className="heading">
-                            <h3>Angelina Jolie</h3>
+                            <h3>{this.state.teacher.name}</h3>
                                 <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px' }} href="/teacher/profile-edit"> Edit</Button>
                                 </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultricies maximus mauris, id fringilla massa consequat et. Nam vitae massa scelerisque quam convallis cursus a non libero. Nullam aliquam vehicula porttitor. Proin in nibh nec magna dignissim vestibulum. Phasellus rutrum dolor facilisis justo cursus aliquet. In hac habitasse platea dictumst. Nulla semper mauris a justo vulputate, ac lacinia mauris bibendum. Nullam pretium pharetra nisi, ut tincidunt quam elementum eu.</p>
+                            <p>{this.state.teacher.description}</p>
                             <div className="details">
-                                <h6> | Sydney, Australia |</h6>
-                                <h6> | katewilson@uts.edu.au |</h6>
-                                <h6>| Teacher for 1 year |</h6>
-                                <h6>| 152560 |</h6>
+                                <h6> | {this.state.teacher.campusLocation}, Australia |</h6>
+                                <h6> | {this.state.teacher.email} |</h6>
+                                <h6>| Teaching Year: {this.state.teacher.teachingYear} |</h6>
+                                <h6>| {this.state.teacher.userid} |</h6>
                             </div>
                         </div>
 
