@@ -1,6 +1,7 @@
 const Teacher = require("../models/teacher");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 module.exports = {
     verifyToken: function (req, res) {
@@ -202,5 +203,49 @@ module.exports = {
                     message: "Teacher could not be deleted"
                 });
             });
+    },
+    sendEmail: async function (req, res) {
+        const secretPin = req.body.secretPin;
+        const teacherID = req.body.teacherID;
+        const classID = req.body.classID;
+        let teacherEmail;
+
+        let response = await Teacher.findOne({userid: teacherID})
+        teacherEmail = response.email;
+        
+        console.log(`sending email from: ${teacherEmail}`);
+
+        //transporter is going to be an object that is able to send mail
+        //transport us the transport config object, connection url or transport plugin instance
+        //defaults is an object that defines default values for mail options
+        let transport = nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+                user: "d59c9dcb970128",
+                pass: "075f9213f14420"
+            }
+        })
+
+        //set mail options - can have multiple address in 'to'
+        const mailOptions = {
+            from: teacherEmail,
+            to: 'guddhikalambe2000@gmail.com',
+            subject: classID + ' Authorisation Pin',
+            html: `<br>Dear student</br>, <br>You are being sent this email as you requested to be authenticated into ${classID}.</br><br>The pin to be authorised is: <b>${secretPin}</b></br>`
+        }
+        
+        //use sendMail once transport is created and message is configures
+        transport.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log(error);
+            }
+            console.log('Message sent: %s', info.messageId)
+            res.json({
+                success: true,
+                message: 'Email sent to all students'
+            })
+        })
+        
     }
 }

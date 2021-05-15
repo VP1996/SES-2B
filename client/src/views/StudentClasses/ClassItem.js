@@ -98,7 +98,6 @@ class ClassItem extends Component {
                             {this.props.flags.captcha && <img src={GreenTickIcon} />}
 
                             {!this.props.flags.pin && <img src={PinCodeIcon} onClick={() => this.handleShow('email-pin')} />}
-
                             <Modal show={this.state.showModal === 'email-pin'} onHide={this.handleClose}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Enter a Pin</Modal.Title>
