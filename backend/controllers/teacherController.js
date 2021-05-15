@@ -1,5 +1,6 @@
 const Teacher = require("../models/teacher");
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 module.exports = {
     verifyToken: function (req, res) {
@@ -97,30 +98,33 @@ module.exports = {
                 }
                 else {
                     //if passwords match then create a payload for the JWT token
-                    if (teacher.password == password) {
-                        const payload = {
-                            id: teacher.id,
-                            userid: teacher.userid
-                        }
-                        // return token created after payload is signed
-                        jwt.sign(
-                            payload,
-                            process.env.TEACHERSECRET,
-                            { expiresIn: 604800 },
-                            (err, token) => {
+                    bcrypt.compare(password, teacher.password)
+                        .then(isMatch => {
+                            if (isMatch) {
+                                const payload = {
+                                    id: teacher.id,
+                                    userid: teacher.userid
+                                }
+                                // return token created after payload is signed
+                                jwt.sign(
+                                    payload,
+                                    process.env.TEACHERSECRET,
+                                    { expiresIn: 604800 },
+                                    (err, token) => {
+                                        res.json({
+                                            success: true,
+                                            userid: teacher.userid,
+                                            token: "Bearer " + token
+                                        });
+                                    }
+                                );
+                            } else {
                                 res.json({
-                                    success: true,
-                                    userid: teacher.userid,
-                                    token: "Bearer " + token
+                                    success: false,
+                                    message: "incorrect password"
                                 });
                             }
-                        );
-                    } else {
-                        res.json({
-                            success: false,
-                            message: "incorrect password"
                         });
-                    }
                 }
             })
             .catch(e => {
@@ -146,7 +150,7 @@ module.exports = {
             })
     },
 
-    update: function (req, res){
+    update: function (req, res) {
         const userid = req.body.userid;
         const password = req.body.password;
         const name = req.body.name;

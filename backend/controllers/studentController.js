@@ -1,5 +1,6 @@
 const Student = require("../models/student");
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 module.exports = {//function to verify token from client to then protect frontend routes. 
     verifyToken: function(req, res) {
@@ -98,31 +99,34 @@ module.exports = {//function to verify token from client to then protect fronten
                 }
                 else {
                     //if passwords match then create a payload for the JWT token
-                    if (student.password == password) {
-                        const payload = {
-                            id: student.id,
-                            userid: student.userid
-                        }
-                        // return token created after payload is signed
-                        jwt.sign(
-                            payload,
-                            process.env.STUDENTSECRET,
-                            { expiresIn: 604800 },
-                            (err, token) => {
+                    bcrypt.compare(password, student.password)
+                        .then(isMatch => {
+                            if (isMatch) {
+                                const payload = {
+                                    id: student.id,
+                                    userid: student.userid
+                                }
+                                // return token created after payload is signed
+                                jwt.sign(
+                                    payload,
+                                    process.env.STUDENTSECRET,
+                                    { expiresIn: 604800 },
+                                    (err, token) => {
+                                        res.json({
+                                            success: true,
+                                            userid: student.userid,
+                                            token: "Bearer " + token,
+                                            message: "Successful login!"
+                                        });
+                                    }
+                                );
+                            } else {
                                 res.json({
-                                    success: true,
-                                    userid: student.userid,
-                                    token: "Bearer " + token,
-                                    message: "Successful login!"
+                                    success: false,
+                                    message: "incorrect password"
                                 });
                             }
-                        );
-                    } else {
-                        res.json({
-                            success: false,
-                            message: "incorrect password"
                         });
-                    }
                 }
             })
             .catch(e => {
