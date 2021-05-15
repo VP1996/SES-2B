@@ -11,11 +11,5 @@
 }
 
 .title{
-    color: cornflowerblue;
-}
-
-.searchField{
-    width: 400px;
-    float: right;
-    margin-top: -10px;
+    color: rgb(56, 59, 65);
 }

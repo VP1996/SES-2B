@@ -16,13 +16,13 @@ const Home = () => {
 						<p>UTS Library</p>
 					</Carousel.Caption>
 				</Carousel.Item>
-				<Carousel.Item interval={500}>
+				<Carousel.Item interval={3000}>
 					<div className="img-2"></div>
 					<Carousel.Caption>
 						<p>UTS</p>
 					</Carousel.Caption>
 				</Carousel.Item>
-				<Carousel.Item>
+				<Carousel.Item interval={3000}>
 					<div className="img-3"></div>
 					<Carousel.Caption>
 						<p>Reading Room, Building 2</p>
