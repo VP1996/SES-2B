@@ -4,8 +4,8 @@ module.exports = {
     create: function (req, res) {
         const className = req.body.className;
         const classID = req.body.classID;
-        const startTime = req.body.startTime;
-        const endTime = req.body.endTime;
+        const startTime = req.body.classStart;
+        const endTime = req.body.classEnd;
 
         Class.findOne({ classID: classID })
             .then(classRecord => {

@@ -7,8 +7,54 @@ import './StudentLogin.scss'
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { observer } from "mobx-react-lite";
+import { useStore } from "../../stores/helpers/UseStore";
+import { useHistory } from "react-router-dom";
 
 const StudentLogin = () => {
+  const {
+    studentAuth,
+  } = useStore();
+  const history = useHistory();
+
+  const [state, setState] = useState({
+    studentID: "",
+    password: ""
+  });
+
+  const clearState = () => {
+    setState({
+      studentID: "",
+      password: "",
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      let response = await axios.post("http://localhost:5000/api/student/login", {
+        studentID: state.studentID,
+        password: state.password,
+      });
+      console.log(response.data.message);
+
+      //Register the login in MobX's persisted state
+      //Lets user refresh page and maintain auth state
+      if (response.data.success) {
+        studentAuth.login({
+          token: response.data.token,
+          userid: response.data.userid,
+        }, () => {
+          history.push('/student/dashboard');
+        })
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="studentLogin-view">
       <NavBar />
@@ -20,19 +66,20 @@ const StudentLogin = () => {
               <h3 style={{ margin: '10%', marginTop: '20%', marginBottom: '0px', font: 'Calibri' }}>Student Sign In</h3>
               <Form className="student-form">
                 <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email" />
-                  <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-    </Form.Text>
+                  <Form.Label>Student ID</Form.Label>
+                  <Form.Control type="text" name="studentID" placeholder="Enter Student ID" onChange={(e) =>
+                  setState({ ...state, studentID: e.target.value })
+                }/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" />
+                  <Form.Control type="password" name="password" placeholder="Password" onChange={(e) =>
+                  setState({ ...state, password: e.target.value })
+                }/>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="login-btn" href="/student/dashboard">
+                <Button variant="primary" type="submit" className="login-btn" href="/student/dashboard" onClick={handleLogin}>
                   Submit
   </Button>
               </Form>
@@ -57,4 +104,4 @@ const StudentLogin = () => {
   );
 };
 
-export default StudentLogin;
+export default observer(StudentLogin);

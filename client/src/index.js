@@ -3,11 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from "react-router-dom";
+import { StoreProvider } from "./stores/helpers/StoreContext";
+import { createStore } from "./stores/helpers/CreateStore";
+
+const rootStore = createStore();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <StoreProvider value={rootStore}>
+        <App />
+    </StoreProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

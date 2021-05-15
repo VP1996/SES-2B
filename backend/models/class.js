@@ -21,6 +21,9 @@ const classSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String
+    },
     students: [AuthUsers],
     teachers: [AuthUsers]
 }, {

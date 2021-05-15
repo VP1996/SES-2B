@@ -1,19 +1,47 @@
 .card-container{
-  max-width: 1000px;
+  width: 85%;
   margin: 20px auto;
   display: flex;
   justify-content: space-around;
+  margin-top: 50px;
 }
-
 .box{
-  width: 200px;
-  height: 200px;
+  width: 25%;
+  height: 300px;
   padding: 10px;
   cursor: pointer;
   .card-title {
     color: #888;
     font-size: 16px;
     text-align: center;
+  }
+  .edit-teachers-img{
+    background-image: url('../../images/teacherProfile.jpg');
+    height: 80%;
+    width: 90%;
+    background-size: cover;
+    margin: auto;
+    border-radius: 50%;
+    margin-top: 20px;
+  }
+  .edit-students-img{
+    background-image: url('../../images/studentProfile.jpg');
+    height: 80%;
+    width: 90%;
+    background-size: cover;
+    margin: auto;
+    border-radius: 50%;
+    margin-top: 20px;
+  }
+  .edit-classes-img{
+    background-image: url('../../images/createClasses.png');
+    height: 80%;
+    width: 90%;
+    background-size: cover;
+    margin: auto;
+    border-radius: 50%;
+    margin-top: 20px;
+
   }
 }
 
