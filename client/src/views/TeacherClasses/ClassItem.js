@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import cryptoRandomString from 'crypto-random-string';
+import axios from 'axios';
 
 
 class ClassItem extends Component {
@@ -45,6 +46,27 @@ class ClassItem extends Component {
             pinOutput: string
         })
     }
+    handleEmailClass = async () => {
+        //send request to backend to generate and send the email to the class memebers. 
+        const body = {
+            teacherID : JSON.parse(localStorage.getItem("teacherData")).userid,
+            classID : 12345678,
+            secretPin : this.state.pinOutput
+        }
+
+        console.log(body.teacherID);
+        console.log(`pin being sent : ${body.secretPin}`);
+
+        try {
+            let response = await axios.post('http://localhost:5000/api/teacher/sendEmail', body)
+            console.log(response.data);
+        } catch (e) {
+            console.log(e);
+        }
+
+        this.handleClose();
+    }
+
     render() {
         return (
             <Card style={{ margin: '10px' }}>
@@ -100,7 +122,7 @@ class ClassItem extends Component {
 
 
 
-                                    <Button variant="secondary" onClick={this.handleClose}>
+                                    <Button variant="secondary" onClick={this.handleEmailClass}>
                                         Email Class
           </Button>
                                     <Button variant="primary" onClick={this.handleClose}>

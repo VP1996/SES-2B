@@ -25,4 +25,8 @@ router
     .route('/verifyToken') // to verify token from frontend - used to protect fronted routes.
     .get(teachersController.verifyToken);
 
+router
+    .route('/sendEmail') // to verify token from frontend - used to protect fronted routes.
+    .post(teachersController.sendEmail);
+
 module.exports = router;
