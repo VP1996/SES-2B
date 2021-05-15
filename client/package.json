@@ -11,6 +11,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "crypto-random-string": "^4.0.0",
+    "mobx": "^6.3.0",
     "mobx-persist": "^0.4.1",
     "mobx-react": "^7.1.0",
     "mobx-react-lite": "^3.2.0",

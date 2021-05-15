@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import 'react-big-scheduler/lib/css/style.css';
 import './styles.css';
-import Card from "react-bootstrap/Card";
-import CameraIcon from '../../images/cameraIcon.png'
-import RoundArrowsIcon from '../../images/roundArrowsIcon.png'
-import PinCodeIcon from '../../images/pinCodeIcon.png'
-import GreenTickIcon from '../../images/greenTickIcon.png'
+import Card from 'react-bootstrap/Card';
+import CameraIcon from '../../images/cameraIcon.png';
+import RoundArrowsIcon from '../../images/roundArrowsIcon.png';
+import PinCodeIcon from '../../images/pinCodeIcon.png';
+import GreenTickIcon from '../../images/greenTickIcon.png';
 import { toast } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
-
+import InteractiveModal from '../../components/Interactiveauth/Interactive.js';
 
 class ClassItem extends Component {
     constructor(props) {
@@ -20,14 +20,25 @@ class ClassItem extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handlePicture = this.handlePicture.bind(this);
+        this.showInteractiveModal = this.showInteractiveModal.bind(this);
+		this.hideInteractiveModal = this.hideInteractiveModal.bind(this);
 
         this.state = {
+            show: false,
             showModal: null,
             pin: '**********',
             pinEntered: '',
             checkBoxChecked: false
         };
     }
+
+    showInteractiveModal = () => {
+		this.setState({ show: true });
+	};
+
+	hideInteractiveModal = () => {
+		this.setState({ show: false });
+	};
 
     handleChange = e => {
         e.preventDefault();
@@ -78,9 +89,12 @@ class ClassItem extends Component {
                                 </Modal.Footer>
                                 {/* onClick={() => toast.success('You have successfully passed the facial check.')} - throw toast when facial recog is done correct and only throw once all three are done */}
                             </Modal>
-
                             {this.props.flags.facial && <img src={GreenTickIcon} />}
-                            {!this.props.flags.captcha && <img src={RoundArrowsIcon} onClick={() => toast.error('Captcha check failed.')} />}
+    
+                            {!this.props.flags.captcha && <img src={RoundArrowsIcon} onClick={() => this.showInteractiveModal()} />}
+                            <InteractiveModal show={this.state.show} handleClose={this.hideInteractiveModal}>
+								<p>Modal</p>
+							</InteractiveModal>
                             {this.props.flags.captcha && <img src={GreenTickIcon} />}
 
                             {!this.props.flags.pin && <img src={PinCodeIcon} onClick={() => this.handleShow('email-pin')} />}
