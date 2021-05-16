@@ -1,21 +1,14 @@
 const router = require('express').Router();
-//const userController = require('../../controllers/userController');
+const multer = require("multer");
+const facialRecognitionHelper = require('../../helpers/facialReconition/facialRecognitionHelper');
 
-// router
-//     .route('/login') // to login to existing account
-//     .post(userController.login);
-
-// router
-//     .route('/register') // to login to existing account
-//     .post(userController.register);
-
-// router 
-//     .route('/verifyToken') // to verify token from frontend - used to protect fronted routes.
-//     .get(userController.verifyToken);
-
-router.get('/verifyFace', async (req, res) => {
-        console.log(req);
-        res.send(true);
-    });
+const upload = multer({
+    dest: './upload/references',
+})
+router.post('/verifyFace', upload.single('profile'), async (req, res) => {
+    //username should probably come the jwt...
+    var result = await facialRecognitionHelper.authoriseFace(req.query.username, req.file.filename);        
+    res.send(result);
+});
 
 module.exports = router;

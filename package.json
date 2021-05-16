@@ -21,6 +21,7 @@
 	"dependencies": {
 		"concurrently": "^6.0.0",
 		"express-validator": "^6.10.0",
+		"multer": "^1.4.2",
 		"react-google-recaptcha": "^2.1.0",
 		"react-script-tag": "^1.1.2",
 		"reaptcha": "^1.7.2",
