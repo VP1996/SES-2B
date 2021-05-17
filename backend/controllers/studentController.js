@@ -164,23 +164,18 @@ module.exports = {//function to verify token from client to then protect fronten
             })
     },
     update: function (req, res) {
-        const userid = req.body.userid;
-        const password = req.body.password;
-        const name = req.body.name;
+        // const password = req.body.password;
         const studyYear = req.body.studyYear;
         const course = req.body.course;
-        const faculty = req.body.faculty;
         const email = req.body.email;
         const campusLocation = req.body.campusLocation;
         const description = req.body.description;
 
-        Student.updateOne({ userid: userid }, {
-            userid,
-            password,
-            name,
+        console.log(description);
+        Student.updateOne({ userid: req.body.student.userid }, {
+            // password,
             studyYear,
             course,
-            faculty,
             email,
             campusLocation,
             description

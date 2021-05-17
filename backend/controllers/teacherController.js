@@ -162,21 +162,16 @@ module.exports = {
                 });
             })
     },
-
     update: function (req, res) {
-        const userid = req.body.userid;
-        const password = req.body.password;
-        const name = req.body.name;
+        // const password = req.body.password;
         const teachingYear = req.body.teachingYear;
         const faculty = req.body.faculty;
         const email = req.body.email;
         const campusLocation = req.body.campusLocation;
         const description = req.body.description;
 
-        Teacher.updateOne({ userid: userid }, {
-            userid,
-            password,
-            name,
+        Teacher.updateOne({ userid: req.body.teacher.userid }, {
+            // password,
             teachingYear,
             faculty,
             email,

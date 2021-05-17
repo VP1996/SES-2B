@@ -12,8 +12,16 @@ const TeacherRoute = ({ component: Component, ...rest }) => {
         if (teacherAuth.loggedIn) {
           return <Component {...props} /> //if logged in -> take it straight to the component it wants to go to 
         } else if (studentAuth.loggedIn) {
-          history.goBack();
+          return history.goBack();
         }
+        return <Redirect to={
+          {
+            pathname: '/',
+            state: {
+              from: props.location
+            }
+          } 
+        } />
       }}
     />
   );

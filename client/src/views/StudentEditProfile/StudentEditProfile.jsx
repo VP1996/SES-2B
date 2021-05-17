@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
+import axios from 'axios';
 
 import './StudentEditProfile.scss';
 import 'react-calendar/dist/Calendar.css';
@@ -11,6 +12,55 @@ import NavBar from '../../components/Navbar/BlueNavBar';
 class StudentEditProfile extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            student: '',
+            studentID: '',
+            password: '',
+            name: '',
+            studyYear: '',
+            course: '',
+            email: '',
+            campusLocation: '',
+            description: ''
+        }
+    }
+
+    async componentDidMount() {
+        try {
+            const response = await axios.post("http://localhost:5000/api/student/profile", { studentID: JSON.parse(localStorage.getItem("studentData")).userid })
+            // console.log(response)
+            this.setState({ student: response.data })
+            this.setState({ studentID: this.state.student.userid })
+            this.setState({ password: this.state.student.password })
+            this.setState({ name: this.state.student.name })
+            this.setState({ studyYear: this.state.student.studyYear })
+            this.setState({ course: this.state.student.course })
+            this.setState({ email: this.state.student.email })
+            this.setState({ campusLocation: this.state.student.campusLocation })
+            this.setState({ description: this.state.student.description })
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    onChange = (e) => {
+        if (e.target.value !== "") {
+            this.setState({ [e.target.name]: e.target.value })
+        }
+    }
+
+    onSave = async (e) => {
+        e.preventDefault();
+        // console.log(this.state);
+        try {
+            let response = await axios.post('http://localhost:5000/api/student/edit', this.state)
+            console.log(response.data.message);
+        } catch (e) {
+            console.log("Could not update student");
+            console.log(e.message);
+
+        }
     }
 
     render() {
@@ -27,41 +77,42 @@ class StudentEditProfile extends Component {
                         <div className="right-information">
                             <div className="heading">
                                 <h3>Student Profile</h3>
-                                <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }}> Save</Button>
+                                <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }} onClick={this.onSave}> Save</Button>
                             </div>
                             <Form>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter name" />
+                                        <Form.Control type="text" placeholder={this.state.student.name}
+                                            disabled={true} name="name"/>
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Student ID</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter student ID" />
+                                        <Form.Control type="text" placeholder={this.state.student.userid} disabled={true} name="studentID" />
                                     </Form.Group>
                                 </Form.Row>
                                 <Form.Group controlId="formGridEmail">
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control as="textarea" placeholder="Enter any highlights, details and information you don't mind being public. Inlcude interests and hobbies." style={{ height: '150px' }} />
+                                    <Form.Control as="textarea" placeholder={this.state.student.description} style={{ height: '150px' }} name="description" onChange={this.onChange} style={{ height: '150px' }} />
                                 </Form.Group>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Year of Study</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter year of study" />
+                                        <Form.Control type="text" placeholder={this.state.student.studyYear} name="studYear" onChange={this.onChange} />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Course</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter your course" />
+                                        <Form.Control type="text" placeholder={this.state.student.course} name="course" onChange={this.onChange}  />
                                     </Form.Group>
                                 </Form.Row>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter email" />
+                                        <Form.Control type="text" placeholder={this.state.student.email} name="email" onChange={this.onChange} />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Location</Form.Label>
-                                        <Form.Control type="email" placeholder="Enter study campus" />
+                                        <Form.Control type="email" placeholder={this.state.student.campusLocation} name="campusLocation" onChange={this.onChange}  />
                                     </Form.Group>
                                 </Form.Row>
                             </Form>
