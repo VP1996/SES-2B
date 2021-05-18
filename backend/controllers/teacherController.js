@@ -164,13 +164,13 @@ module.exports = {
     },
     update: function (req, res) {
         // const password = req.body.password;
-        const teachingYear = req.body.teachingYear;
-        const faculty = req.body.faculty;
-        const email = req.body.email;
-        const campusLocation = req.body.campusLocation;
-        const description = req.body.description;
+        const teachingYear = req.body.teacherYear;
+        const faculty = req.body.teacherFaculty;
+        const email = req.body.teacherEmail;
+        const campusLocation = req.body.teacherLocation;
+        const description = req.body.teacherDescription;
 
-        Teacher.updateOne({ userid: req.body.teacher.userid }, {
+        Teacher.updateOne({ userid: req.body.teacherID }, {
             // password,
             teachingYear,
             faculty,
