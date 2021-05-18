@@ -19,5 +19,14 @@ router
 router
     .route('/removeTeacher')
     .post(classController.removeTeacher)
+router
+    .route('/all')
+    .get(classController.findAll)
+router
+    .route('/student-classes')
+    .get(classController.findStudentClasses)
+router
+    .route('/teacher-classes')
+    .get(classController.findTeacherClasses)
 
 module.exports = router;

@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 
 import './TeacherDashboard.scss';
 import 'react-calendar/dist/Calendar.css';
@@ -12,6 +13,26 @@ import NavBar from '../../components/Navbar/BlueNavBar';
 class TeacherDasboard extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            classes: [],
+            teacher: ''
+        }
+    }
+
+    async componentDidMount() {
+        let classesRes = await axios.get("http://localhost:5000/api/class/teacher-classes", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid })
+        this.setState({ classes: classesRes.data.classes })
+
+        try {
+            const response = await axios.post("http://localhost:5000/api/teacher/profile", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid })
+            // console.log(response)
+            this.setState({ teacher: response.data })
+
+            //get classes from backend
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     render() {
@@ -25,11 +46,7 @@ class TeacherDasboard extends Component {
                         <Card.Body>
                             <Card.Title>Your Teacher Profile</Card.Title>
                             <Card.Text>
-                                Hi Kate, you can view/update your personal information by visiting
-                                your profile. For facial recognition you can also add your images which
-                                can be used to match later. Lorem ipsum dolor sit amet, consectetur
-                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua.
+                                {this.state.teacher.description}
 
                     </Card.Text>
                             <div className="links">
@@ -40,13 +57,12 @@ class TeacherDasboard extends Component {
                     {/* // card#2 */}
                     <Card style={{ width: '28%', height: '19.5rem' }}>
                         <Card.Body>
-                            <Card.Title>Today's Classes</Card.Title>
+                            <Card.Title>Your Classes</Card.Title>
                             <Card.Text>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>Mathematical Modelling 1</ListGroup.Item>
-                                    <ListGroup.Item>Engineering Communications</ListGroup.Item>
-                                    <ListGroup.Item>Programming Fundamentals</ListGroup.Item>
-                                    <ListGroup.Item>Data Structures and Algorithms</ListGroup.Item>
+                                {this.state.classes.map(aClass => (
+                                    <ListGroup.Item>{aClass.className}</ListGroup.Item>
+                                    ))}
                                 </ListGroup>
                             </Card.Text>
                         </Card.Body>

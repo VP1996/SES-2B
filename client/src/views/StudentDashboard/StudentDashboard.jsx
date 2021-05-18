@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Calendar from 'react-calendar';
+import axios from 'axios';
 
 import './StudentDashboard.scss';
 import 'react-calendar/dist/Calendar.css';
@@ -12,26 +13,33 @@ import NavBar from '../../components/Navbar/BlueNavBar';
 class StudentDasboard extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            classes: [],
+            student: '',
+        }
+    }
+
+    async componentDidMount() {
+        let classesRes = await axios.get("http://localhost:5000/api/class/student-classes", { studentID: JSON.parse(localStorage.getItem("studentData")).userid })
+        this.setState({ classes: classesRes.data.classes })
+
+        axios.post("http://localhost:5000/api/student/profile", { studentID: JSON.parse(localStorage.getItem("studentData")).userid }).then(response => { this.setState({ student: response.data }) });
     }
 
     render() {
         return (
             <div className="dashboard-view">
-                <NavBar dashboardURL='/student/dashboard' profileURL='/student/profile' classesURL='/student/classes'/>
-                <h4 style={{paddingTop:'20px'}}>Dashboard</h4>
+                <NavBar dashboardURL='/student/dashboard' profileURL='/student/profile' classesURL='/student/classes' />
+                <h4 style={{ paddingTop: '20px' }}>Dashboard</h4>
                 <div className="horizontal-cards">
                     {/* // card #1 */}
                     <Card style={{ width: '35rem', height: '19.5rem' }}>
                         <Card.Body>
                             <Card.Title>Your Student Profile</Card.Title>
-                            <Card.Text>
-                                Hi Kate, you can view/update your personal information by visiting
-                                your profile. For facial recognition you can also add your images which
-                                can be used to match later.Lorem ipsum dolor sit amet, consectetur
-                                elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua.
-
-                    </Card.Text>
+                            <Card.Text style={{ height: '100%' }}>
+                                {this.state.student.description}
+                            </Card.Text>
                             <div className="links">
                                 <Button className="profile-btn" size="large" href="/student/profile">Profile &gt;</Button>
                             </div>
@@ -40,13 +48,12 @@ class StudentDasboard extends Component {
                     {/* // card#2 */}
                     <Card style={{ width: '25rem', height: '19.5rem' }}>
                         <Card.Body>
-                            <Card.Title>Today's Classes</Card.Title>
+                            <Card.Title>Your Classes</Card.Title>
                             <Card.Text>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>Mathematical Modelling 1</ListGroup.Item>
-                                    <ListGroup.Item>Engineering Communications</ListGroup.Item>
-                                    <ListGroup.Item>Programming Fundamentals</ListGroup.Item>
-                                    <ListGroup.Item>Data Structures and Algorithms</ListGroup.Item>
+                                    {this.state.classes.map(aClass => (
+                                    <ListGroup.Item>{aClass.className}</ListGroup.Item>
+                                    ))}
                                 </ListGroup>
                             </Card.Text>
                         </Card.Body>
@@ -66,7 +73,7 @@ class StudentDasboard extends Component {
                 <h5>Recently Attended Classes</h5>
                 <div className="recent-classes-cards">
                     {/* // card #1 */}
-                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(0,128,128, 0.2)'}}>
+                    <Card style={{ width: '20rem', backgroundColor: 'rgb(0,128,128, 0.2)' }}>
                         <Card.Body>
                             <Card.Title>EPP2</Card.Title>
                             <div className="card-body-items">
@@ -76,7 +83,7 @@ class StudentDasboard extends Component {
                         </Card.Body>
                     </Card>
                     {/* // card#2 */}
-                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(255,0,0, 0.3)'}}>
+                    <Card style={{ width: '20rem', backgroundColor: 'rgb(255,0,0, 0.3)' }}>
                         <Card.Body>
                             <Card.Title>MM1</Card.Title>
                             <div className="card-body-items">
@@ -87,7 +94,7 @@ class StudentDasboard extends Component {
                         </Card.Body>
                     </Card>
                     {/* // card #3 */}
-                    <Card style={{ width: '20rem' , backgroundColor: 'rgb(128,0,128, 0.2)'}}>
+                    <Card style={{ width: '20rem', backgroundColor: 'rgb(128,0,128, 0.2)' }}>
                         <Card.Body>
                             <Card.Title>BRM12</Card.Title>
                             <div className="card-body-items">
