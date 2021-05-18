@@ -137,6 +137,7 @@ module.exports = {
             })
     },
     getTeacher: async function (req, res) {
+        console.log(req.body.teacherID );
         try {
             let teacher = await Teacher.findOne({ userid: req.body.teacherID }, {userid: 1, name: 1, teachingYear: 1, faculty: 1, email: 1, campusLocation: 1, description: 1})
             if (teacher) {

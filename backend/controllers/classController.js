@@ -182,7 +182,7 @@ module.exports = {
         const studentID = req.body.studentID
         Class.find({ "students.studentID": studentID })
             .then(classes => {
-                // console.log(classes)
+                console.log(classes)
                 return res.status(200).json({
                     classes
                 });
@@ -197,7 +197,7 @@ module.exports = {
         const teacherID = req.body.teacherID
         Class.find({ "teachers.teacherID": teacherID })
             .then(classes => {
-                // console.log(classes)
+                console.log(classes)
                 return res.status(200).json({
                     classes
                 });

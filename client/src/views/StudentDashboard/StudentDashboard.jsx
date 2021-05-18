@@ -21,7 +21,7 @@ class StudentDasboard extends Component {
     }
 
     async componentDidMount() {
-        let classesRes = await axios.get("http://localhost:5000/api/class/student-classes", { studentID: JSON.parse(localStorage.getItem("studentData")).userid })
+        let classesRes = await axios.post("http://localhost:5000/api/class/student-classes", { studentID: JSON.parse(localStorage.getItem("studentData")).userid })
         this.setState({ classes: classesRes.data.classes })
 
         axios.post("http://localhost:5000/api/student/profile", { studentID: JSON.parse(localStorage.getItem("studentData")).userid }).then(response => { this.setState({ student: response.data }) });

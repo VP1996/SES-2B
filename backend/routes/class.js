@@ -24,9 +24,9 @@ router
     .get(classController.findAll)
 router
     .route('/student-classes')
-    .get(classController.findStudentClasses)
+    .post(classController.findStudentClasses)
 router
     .route('/teacher-classes')
-    .get(classController.findTeacherClasses)
+    .post(classController.findTeacherClasses)
 
 module.exports = router;

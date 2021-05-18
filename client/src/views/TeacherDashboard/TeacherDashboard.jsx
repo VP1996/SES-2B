@@ -21,15 +21,13 @@ class TeacherDasboard extends Component {
     }
 
     async componentDidMount() {
-        let classesRes = await axios.get("http://localhost:5000/api/class/teacher-classes", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid })
+        let classesRes = await axios.post("http://localhost:5000/api/class/teacher-classes", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid })
         this.setState({ classes: classesRes.data.classes })
 
         try {
             const response = await axios.post("http://localhost:5000/api/teacher/profile", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid })
             // console.log(response)
             this.setState({ teacher: response.data })
-
-            //get classes from backend
         } catch (e) {
             console.log(e);
         }
