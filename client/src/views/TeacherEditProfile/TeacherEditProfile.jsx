@@ -16,13 +16,13 @@ class TeacherEditProfile extends Component {
         this.state = {
             teacher: '',
             teacherID: '',
-            password: '',
-            name: '',
-            teachingYear: '',
-            faculty: '',
-            email: '',
-            campusLocation: '',
-            description: ''
+            tecaherPassword: '',
+            teacherName: '',
+            teacherYear: '',
+            teacherFaculty: '',
+            teacherEmail: '',
+            teacherLocation: '',
+            teacherDescription: ''
         }
     }
 
@@ -32,13 +32,13 @@ class TeacherEditProfile extends Component {
             // console.log(response)
             this.setState({ teacher: response.data })
             this.setState({ teacherID: this.state.teacher.userid })
-            this.setState({ password: this.state.teacher.password })
-            this.setState({ name: this.state.teacher.name })
-            this.setState({ teachingYear: this.state.teacher.teachingYear })
-            this.setState({ faculty: this.state.teacher.faculty })
-            this.setState({ email: this.state.teacher.email })
-            this.setState({ campusLocation: this.state.teacher.campusLocation })
-            this.setState({ description: this.state.teacher.description })
+            this.setState({ tecaherPassword: this.state.teacher.password })
+            this.setState({ teacherName: this.state.teacher.name })
+            this.setState({ teacherYear: this.state.teacher.teachingYear })
+            this.setState({ teacherFaculty: this.state.teacher.faculty })
+            this.setState({ teacherEmail: this.state.teacher.email })
+            this.setState({ teacherLocation: this.state.teacher.campusLocation })
+            this.setState({ teacherDescription: this.state.teacher.description })
         } catch (e) {
             console.log(e);
         }
@@ -84,7 +84,7 @@ class TeacherEditProfile extends Component {
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Name</Form.Label>
                                         <Form.Control type="text" placeholder={this.state.teacher.name}
-                                            disabled={true} name="name" />
+                                            disabled={true} name="teacherName" />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Teacher ID</Form.Label>
@@ -93,30 +93,30 @@ class TeacherEditProfile extends Component {
                                 </Form.Row>
                                 <Form.Group controlId="formGridEmail">
                                     <Form.Label>Description</Form.Label>
-                                    <Form.Control as="textarea" placeholder={this.state.teacher.description} style={{ height: '150px' }} name="description" onChange={this.onChange} />
+                                    <Form.Control as="textarea" placeholder={this.state.teacher.description} style={{ height: '150px' }} name="teacherDescription" onChange={this.onChange} />
                                 </Form.Group>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Password</Form.Label>
-                                        <Form.Control type="email" placeholder='********' name="password" onChange={this.onChange} />
+                                        <Form.Control type="email" placeholder='********' name="teacherPassword" onChange={this.onChange} />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control type="text" placeholder={this.state.teacher.email} name="email" onChange={this.onChange} />
+                                        <Form.Control type="text" placeholder={this.state.teacher.email} name="teacherEmail" onChange={this.onChange} />
                                     </Form.Group>
                                 </Form.Row>
                                 <Form.Row>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Years at UTS </Form.Label>
-                                        <Form.Control type="text" placeholder={this.state.teacher.teachingYear} name="teachingYear" onChange={this.onChange} />
+                                        <Form.Control type="text" placeholder={this.state.teacher.teachingYear} name="teacherYear" onChange={this.onChange} />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Faculty</Form.Label>
-                                        <Form.Control type="text" placeholder={this.state.teacher.faculty} name="faculty" onChange={this.onChange} />
+                                        <Form.Control type="text" placeholder={this.state.teacher.faculty} name="teacherFaculty" onChange={this.onChange} />
                                     </Form.Group>
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label>Location</Form.Label>
-                                        <Form.Control type="text" placeholder={this.state.teacher.campusLocation} name="campusLocation" onChange={this.onChange} />
+                                        <Form.Control type="text" placeholder={this.state.teacher.campusLocation} name="teacherLocation" onChange={this.onChange} />
                                     </Form.Group>
                                 </Form.Row>
                             </Form>
