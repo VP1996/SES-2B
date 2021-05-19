@@ -87,29 +87,44 @@ class ClassItem extends Component {
         this.handleClose()
     }
 
+    b64toBlob(b64Data, contentType='', sliceSize=512) {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+     
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+     
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+     
+            const byteArray = new Uint8Array(byteNumbers);
+     
+            byteArrays.push(byteArray);
+        }
+     
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
     async handleVerifyImage(src) {
         console.log(src)
         console.log('authenticate photo')
 
-        const contentType = 'image/jpeg';
-        const userid = JSON.parse(localStorage.getItem("studentData")).userid
-        const base64 = btoa(src)
-        const byteCharacters = atob(base64);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], {type: contentType});
-
+        var block = src.split(";");
+        var contentType = block[0].split(":")[1];
+        var realData = block[1].split(",")[1];
+        var blob = this.b64toBlob(realData, contentType);
         
+        const userid = JSON.parse(localStorage.getItem("studentData")).userid
         const formData = new FormData();
-        formData.append('profile', blob, "userFace")
+        formData.append('profile', blob, "userFace.jpeg")
         formData.append('username', userid)
-        console.log(formData)
+        //console.log(formData)
         let response = await axios.post("http://localhost:5000/api/auth/verifyFace", formData, { headers: { 'Content-Type': 'multipart/form-data' } })
         
-        console.log(response.data)
+        //console.log(response.data)
     }
 
     async handlePin() {
