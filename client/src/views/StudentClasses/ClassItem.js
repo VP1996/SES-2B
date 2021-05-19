@@ -91,15 +91,22 @@ class ClassItem extends Component {
         console.log(src)
         console.log('authenticate photo')
 
+        const contentType = 'image/jpeg';
         const userid = JSON.parse(localStorage.getItem("studentData")).userid
         const base64 = btoa(src)
-        const blob = await base64.blob()
-        const blob = new Blob(base64);
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], {type: contentType});
+
+        
         const formData = new FormData();
         formData.append('profile', blob, "userFace")
         formData.append('username', userid)
         console.log(formData)
-
         let response = await axios.post("http://localhost:5000/api/auth/verifyFace", formData, { headers: { 'Content-Type': 'multipart/form-data' } })
         
         console.log(response.data)

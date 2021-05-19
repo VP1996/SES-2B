@@ -7,6 +7,7 @@ const upload = multer({
 })
 router.post('/verifyFace', upload.single('profile'), async (req, res) => {
     //username should probably come the jwt...
+    console.log('hit without errors!');
     var result = await facialRecognitionHelper.authoriseFace(req.body.username, req.file.filename);        
     res.send(result);
 });
