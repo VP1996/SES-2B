@@ -52,7 +52,7 @@ class StudentDasboard extends Component {
                             <Card.Text>
                                 <ListGroup variant="flush">
                                     {this.state.classes.map(aClass => (
-                                    <ListGroup.Item>{aClass.className}</ListGroup.Item>
+                                        <ListGroup.Item>{aClass.className}</ListGroup.Item>
                                     ))}
                                 </ListGroup>
                             </Card.Text>

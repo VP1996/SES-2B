@@ -182,7 +182,7 @@ module.exports = {
         const studentID = req.body.studentID
         Class.find({ "students.studentID": studentID })
             .then(classes => {
-                console.log(classes)
+                // console.log(classes)
                 return res.status(200).json({
                     classes
                 });
@@ -197,7 +197,7 @@ module.exports = {
         const teacherID = req.body.teacherID
         Class.find({ "teachers.teacherID": teacherID })
             .then(classes => {
-                console.log(classes)
+                // console.log(classes)
                 return res.status(200).json({
                     classes
                 });
@@ -207,5 +207,84 @@ module.exports = {
                     classes: []
                 });
             })
+    },
+    findStudentAuthObject: function (req, res) {
+        const studentID = req.body.studentID
+        const classID = req.body.classID
+
+        Class.find({ classID: classID }, { students: { $elemMatch: { studentID: studentID } } })
+            .then(studentAuthObject => {
+                return res.status(200).json({
+                    studentAuth: studentAuthObject,
+                    success: true,
+                    message: "Sent Auth Obj"
+                })
+            })
+            .catch(e => {
+                return res.status(400).json({
+                    success: false,
+                    message: "Could not get student Auth object."
+                })
+            });
+    },
+    updateFacialFlag: function (req, res) {
+        const studentID = req.body.studentID
+        const classID = req.body.classID
+
+        Class.updateOne({classID: classID, "students.studentID": studentID}, {$set: {"students.$.facialFlag": true}})
+            .then(response => {
+                console.log(response)
+                return res.status(200).json({
+                    response,
+                    success: true,
+                    message: "Updated facial flag to true"
+                })
+            })
+            .catch(e => {
+                return res.status(400).json({
+                    success: false,
+                    message: "Could not update facial flag."
+                })
+            });
+    },
+    updateCaptchaFlag: function (req, res) {
+        const studentID = req.body.studentID
+        const classID = req.body.classID
+
+        Class.updateOne({classID: classID, "students.studentID": studentID}, {$set: {"students.$.facialFlag": true}})
+            .then(response => {
+                console.log(response)
+                return res.status(200).json({
+                    response,
+                    success: true,
+                    message: "Updated facial flag to true"
+                })
+            })
+            .catch(e => {
+                return res.status(400).json({
+                    success: false,
+                    message: "Could not update facial flag."
+                })
+            });
+    },
+    updatePinFlag: function (req, res) {
+        const studentID = req.body.studentID
+        const classID = req.body.classID
+
+        Class.updateOne({classID: classID, "students.studentID": studentID}, {$set: {"students.$.emailPinFlag": true}})
+            .then(response => {
+                console.log(response)
+                return res.status(200).json({
+                    response,
+                    success: true,
+                    message: "Updated pin flag to true"
+                })
+            })
+            .catch(e => {
+                return res.status(400).json({
+                    success: false,
+                    message: "Could not update pin flag."
+                })
+            });
     }
 }

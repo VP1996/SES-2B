@@ -75,7 +75,7 @@ class ClassItem extends Component {
                         <div className="class-name">{this.props.name}</div>
                         <div className="class-time">{this.props.startTime} - {this.props.endTime}</div>
                         <div className="class-button-group">
-                            {!this.props.flags.facial && <img src={CameraIcon} onClick={() => this.handleShow('facial-recog')} />}
+                            {!this.props.facial && <img src={CameraIcon} onClick={() => this.handleShow('facial-recog')} />}
 
 
                             <Modal show={this.state.showModal === 'facial-recog'} onHide={this.handleClose}>

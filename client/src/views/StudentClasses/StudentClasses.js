@@ -5,7 +5,7 @@ import 'react-big-scheduler/lib/css/style.css';
 import NavBar from '../../components/Navbar/BlueNavBar';
 import Card from 'react-bootstrap/Card';
 import ClassItem from './ClassItem';
-
+import axios from 'axios';
 
 const DemoData = {
 	resources: [
@@ -89,6 +89,12 @@ class Student extends Component {
 	constructor(props) {
 		super(props);
 
+		// this.getClasses = this.getClasses.bind(this);
+
+		this.state = {
+			classes: []
+		}
+
 		let schedulerData = new SchedulerData(
 			new Date(),
 			ViewTypes.Week,
@@ -109,6 +115,17 @@ class Student extends Component {
 			viewModel: schedulerData,
 		};
 	}
+
+	async componentDidMount() {
+		console.log("HI");
+		let classesRes = await axios.post("http://localhost:5000/api/class/student-classes", { studentID: JSON.parse(localStorage.getItem("studentData")).userid });
+		this.setState({ classes: classesRes.data.classes });
+		console.log(this.state.classes);
+	}
+
+	// async getClasses() {
+
+	// }
 
 	render() {
 		const { viewModel } = this.state;
@@ -147,17 +164,18 @@ class Student extends Component {
 					}}
 				>
 					<Card.Body>
-						<Card.Title>Today's Classes</Card.Title>
+						<Card.Title>All Classes</Card.Title>
 						<Card.Text>
-							{classesMockData.map((c) => (
+							{this.state.classes ? this.state.classes.map(aClass => (
 								<ClassItem
-									classId={c.classId}
-									name={c.className}
-									flags={c.flags}
-									startTime={c.startTime}
-									endTime={c.endTime}
+									classId={aClass.classID}
+									name={aClass.className}
+									// flags={c.flags}
+									startTime={aClass.startTime}
+									endTime={aClass.endTime}
+									studentAuth ={aClass.students}
 								/>
-							))}
+							)) : console.log("there are no classes")}
 						</Card.Text>
 					</Card.Body>
 				</Card>
