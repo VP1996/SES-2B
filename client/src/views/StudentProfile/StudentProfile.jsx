@@ -14,7 +14,8 @@ class StudentProfile extends Component {
         super(props);
 
         this.state = {
-            student: ''
+            student: '',
+            classes: []
         }
     }
 
@@ -32,7 +33,9 @@ class StudentProfile extends Component {
             console.log(this.state);
         } catch (e) {
             console.log(e);
-        }  
+        }
+        let classesRes = await axios.post("http://localhost:5000/api/class/student-classes", { studentID: JSON.parse(localStorage.getItem("studentData")).userid })
+        this.setState({ classes: classesRes.data.classes })
     }
 
     render() {
@@ -68,10 +71,9 @@ class StudentProfile extends Component {
                         <Card className="bottom-cards">
                             <h6 style={{ margin: '15px', color: 'grey' }}>Classes Allocated</h6>
                             <ListGroup variant="flush" style={{ height: '100%' }}>
-                                <ListGroup.Item>Mathematical Modelling 1</ListGroup.Item>
-                                <ListGroup.Item>Engineering Communications</ListGroup.Item>
-                                <ListGroup.Item>Programming Fundamentals</ListGroup.Item>
-                                <ListGroup.Item>Data Structures and Algorithms</ListGroup.Item>
+                            {this.state.classes.map(aClass => (
+                                        <ListGroup.Item>{aClass.className}</ListGroup.Item>
+                                    ))}
                             </ListGroup>
                         </Card>
                         <Card className="bottom-cards">
