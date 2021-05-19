@@ -13,18 +13,21 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import InteractiveModal from '../../components/Interactiveauth/Interactive.js';
 import axios from 'axios';
+import WebcamCapture from '../../components/WebcamCapture'
+import { ContextBuilder } from 'express-validator/src/context-builder';
 
 class ClassItem extends Component {
     constructor(props) {
         super(props);
-        
+
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handlePicture = this.handlePicture.bind(this);
         this.handlePin = this.handlePin.bind(this);
-		this.handleCaptcha = this.handleCaptcha.bind(this);
+        this.handleCaptcha = this.handleCaptcha.bind(this);
         this.showInteractiveModal = this.showInteractiveModal.bind(this);
-		this.hideInteractiveModal = this.hideInteractiveModal.bind(this);
+        this.hideInteractiveModal = this.hideInteractiveModal.bind(this);
+        this.handleVerifyImage = this.handleVerifyImage.bind(this);
 
         this.state = {
             show: false,
@@ -37,19 +40,19 @@ class ClassItem extends Component {
     }
 
     async componentDidMount() {
-        let response = await axios.post("http://localhost:5000/api/class/getStudentAuth", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID : this.props.classId});
+        let response = await axios.post("http://localhost:5000/api/class/getStudentAuth", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId });
         this.setState({ studentAuthObj: response.data.studentAuth[0].students[0] })
         // console.log(this.state.studentAuthObj);
         console.log(response.data.message);
     }
 
     showInteractiveModal = () => {
-		this.setState({ show: true });
-	};
+        this.setState({ show: true });
+    };
 
-	hideInteractiveModal = () => {
-		this.setState({ show: false });
-	};
+    hideInteractiveModal = () => {
+        this.setState({ show: false });
+    };
 
     handleChange = e => {
         e.preventDefault();
@@ -62,14 +65,14 @@ class ClassItem extends Component {
         this.setState({ showModal: id });
     }
     handleClose() {
-        this.setState({ showModal: null, pinEntered: '' , checkBoxChecked: false});
+        this.setState({ showModal: null, pinEntered: '', checkBoxChecked: false });
     }
     async handlePicture() {
         //take picture using user webcam - use a package?
         this.setState(prevState => ({
             studentAuthObj: {
                 ...prevState.studentAuthObj,
-                facialFlag : true
+                facialFlag: true
             }
         }))
 
@@ -84,6 +87,46 @@ class ClassItem extends Component {
         this.handleClose()
     }
 
+    b64toBlob(b64Data, contentType='', sliceSize=512) {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+     
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+     
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+     
+            const byteArray = new Uint8Array(byteNumbers);
+     
+            byteArrays.push(byteArray);
+        }
+     
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
+    async handleVerifyImage(src) {
+        console.log(src)
+        console.log('authenticate photo')
+
+        var block = src.split(";");
+        var contentType = block[0].split(":")[1];
+        var realData = block[1].split(",")[1];
+        var blob = this.b64toBlob(realData, contentType);
+        
+        const userid = JSON.parse(localStorage.getItem("studentData")).userid
+        const formData = new FormData();
+        formData.append('profile', blob, "userFace.jpeg")
+        formData.append('username', userid)
+        //console.log(formData)
+        let response = await axios.post("http://localhost:5000/api/auth/verifyFace", formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+        
+        //console.log(response.data)
+    }
+
     async handlePin() {
         // check pin with pin stored
 
@@ -91,7 +134,7 @@ class ClassItem extends Component {
         this.setState(prevState => ({
             studentAuthObj: {
                 ...prevState.studentAuthObj,
-                emailPinFlag : true
+                emailPinFlag: true
             }
         }))
 
@@ -113,7 +156,7 @@ class ClassItem extends Component {
 
         //if third auth completed- then display snackbar
 
-        
+
         //close modal
         this.hideInteractiveModal()
     }
@@ -126,7 +169,7 @@ class ClassItem extends Component {
                         <div className="class-name">{this.props.name}</div>
                         <div className="class-time">{this.props.startTime} - {this.props.endTime}</div>
                         <div className="class-button-group">
-                            
+
                             {/* if flag is false then show img which has an onClick event */}
                             {!this.state.studentAuthObj.facialFlag && <img src={CameraIcon} onClick={() => this.handleShow('facial-recog')} />}
 
@@ -140,6 +183,7 @@ class ClassItem extends Component {
                                         <InputGroup.Checkbox aria-label="Checkbox for web cam use" onClick={() => this.setState({ checkBoxChecked: true })} />
                                         <InputGroup.Text>Allow webcam use</InputGroup.Text>
                                     </InputGroup.Prepend>
+                                    <WebcamCapture handleVerifyImage={this.handleVerifyImage} />
                                     {this.state.checkBoxChecked === true ?
                                         (<Button variant="primary" onClick={this.handlePicture}>
                                             Take a Picture!
@@ -152,12 +196,12 @@ class ClassItem extends Component {
                             </Modal>
                             {this.state.studentAuthObj.facialFlag && <img src={GreenTickIcon} />}
                             {/* if flag is true then show green tick*/}
-                            
+
                             {/* if flag is false then show img which has an onClick event */}
                             {!this.state.studentAuthObj.recaptchaFlag && <img src={RoundArrowsIcon} onClick={() => this.showInteractiveModal()} />}
                             <InteractiveModal show={this.state.show} handleClose={this.hideInteractiveModal} handleCaptcha={this.handleCaptcha}>
-								<p>Modal</p>
-							</InteractiveModal>
+                                <p>Modal</p>
+                            </InteractiveModal>
                             {this.state.studentAuthObj.recaptchaFlag && <img src={GreenTickIcon} />}
                             {/* if flag is true then show green tick*/}
 
