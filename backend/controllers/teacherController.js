@@ -136,7 +136,20 @@ module.exports = {
                 });
             })
     },
-
+    getTeacher: async function (req, res) {
+        console.log(req.body.teacherID );
+        try {
+            let teacher = await Teacher.findOne({ userid: req.body.teacherID }, {userid: 1, name: 1, teachingYear: 1, faculty: 1, email: 1, campusLocation: 1, description: 1})
+            if (teacher) {
+                res.status(200).json(teacher);
+            }
+        } catch (e) {
+            res.status(400).json({
+                succes: false,
+                response: "Could not find user."
+            })
+        }
+    },
     findAll: function (req, res) {
         Teacher.find()
             .then(teachers => {
@@ -150,21 +163,16 @@ module.exports = {
                 });
             })
     },
-
     update: function (req, res) {
-        const userid = req.body.userid;
-        const password = req.body.password;
-        const name = req.body.name;
-        const teachingYear = req.body.teachingYear;
-        const faculty = req.body.faculty;
-        const email = req.body.email;
-        const campusLocation = req.body.campusLocation;
-        const description = req.body.description;
+        // const password = req.body.password;
+        const teachingYear = req.body.teacherYear;
+        const faculty = req.body.teacherFaculty;
+        const email = req.body.teacherEmail;
+        const campusLocation = req.body.teacherLocation;
+        const description = req.body.teacherDescription;
 
-        Teacher.updateOne({ userid: userid }, {
-            userid,
-            password,
-            name,
+        Teacher.updateOne({ userid: req.body.teacherID }, {
+            // password,
             teachingYear,
             faculty,
             email,

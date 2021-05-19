@@ -19,12 +19,12 @@ const authSchema = new Schema({
         type: Boolean,
         required: true
     },
-    studentName: {
-        type: String,
+    studentID: {
+        type: Number,
         required: true
     },
-    teacherName: {
-        type: String,
+    teacherID: {
+        type: Number,
         required: true
     }
 }, {

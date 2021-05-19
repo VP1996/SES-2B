@@ -19,5 +19,26 @@ router
 router
     .route('/removeTeacher')
     .post(classController.removeTeacher)
+router
+    .route('/all')
+    .get(classController.findAll)
+router
+    .route('/student-classes')
+    .post(classController.findStudentClasses)
+router
+    .route('/teacher-classes')
+    .post(classController.findTeacherClasses)
+router
+    .route('/getStudentAuth')
+    .post(classController.findStudentAuthObject)
+router
+    .route('/updateFacialFlag')
+    .post(classController.updateFacialFlag)
+router
+    .route('/updateCaptchaFlag')
+    .post(classController.updateCaptchaFlag)
+router
+    .route('/updatePinFlag')
+    .post(classController.updatePinFlag)
 
 module.exports = router;

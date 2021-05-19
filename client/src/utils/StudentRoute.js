@@ -14,6 +14,14 @@ const StudentRoute = ({ component: Component, ...rest }) => {
         } else if (teacherAuth.loggedIn) {
           history.goBack()
         }
+        return <Redirect to={
+          {
+            pathname: '/',
+            state: {
+              from: props.location
+            }
+          } 
+        } />
       }}
     />
   );

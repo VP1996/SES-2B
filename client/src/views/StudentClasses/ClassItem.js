@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
 import InteractiveModal from '../../components/Interactiveauth/Interactive.js';
+import axios from 'axios';
 
 class ClassItem extends Component {
     constructor(props) {
@@ -20,6 +21,8 @@ class ClassItem extends Component {
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handlePicture = this.handlePicture.bind(this);
+        this.handlePin = this.handlePin.bind(this);
+		this.handleCaptcha = this.handleCaptcha.bind(this);
         this.showInteractiveModal = this.showInteractiveModal.bind(this);
 		this.hideInteractiveModal = this.hideInteractiveModal.bind(this);
 
@@ -28,8 +31,16 @@ class ClassItem extends Component {
             showModal: null,
             pin: '**********',
             pinEntered: '',
-            checkBoxChecked: false
+            checkBoxChecked: false,
+            studentAuthObj: {}
         };
+    }
+
+    async componentDidMount() {
+        let response = await axios.post("http://localhost:5000/api/class/getStudentAuth", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID : this.props.classId});
+        this.setState({ studentAuthObj: response.data.studentAuth[0].students[0] })
+        // console.log(this.state.studentAuthObj);
+        console.log(response.data.message);
     }
 
     showInteractiveModal = () => {
@@ -51,11 +62,60 @@ class ClassItem extends Component {
         this.setState({ showModal: id });
     }
     handleClose() {
-        this.setState({ showModal: null, pinEntered: '' });
+        this.setState({ showModal: null, pinEntered: '' , checkBoxChecked: false});
     }
-    handlePicture() {
+    async handlePicture() {
         //take picture using user webcam - use a package?
-        this.setState({ showModal: null, pinEntered: '', checkBoxChecked: false });// close modal
+        this.setState(prevState => ({
+            studentAuthObj: {
+                ...prevState.studentAuthObj,
+                facialFlag : true
+            }
+        }))
+
+        // set facialFlag in database to true
+        let response = await axios.post("http://localhost:5000/api/class/updateFacialFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
+        console.log(response.data.message)
+
+        //if third auth completed- then display snackbar
+
+
+        // close modal
+        this.handleClose()
+    }
+
+    async handlePin() {
+        // check pin with pin stored
+
+        // update flag in state
+        this.setState(prevState => ({
+            studentAuthObj: {
+                ...prevState.studentAuthObj,
+                emailPinFlag : true
+            }
+        }))
+
+        //update flag in database
+        let response = await axios.post("http://localhost:5000/api/class/updatePinFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
+        console.log(response.data.message)
+
+        //if third auth completed- then display snackbar
+
+
+        //close modal
+        this.handleClose()
+    }
+
+    async handleCaptcha() {
+        //update flag in database
+        let response = await axios.post("http://localhost:5000/api/class/updateCaptchaFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
+        console.log(response.data.message)
+
+        //if third auth completed- then display snackbar
+
+        
+        //close modal
+        this.hideInteractiveModal()
     }
 
     render() {
@@ -66,8 +126,9 @@ class ClassItem extends Component {
                         <div className="class-name">{this.props.name}</div>
                         <div className="class-time">{this.props.startTime} - {this.props.endTime}</div>
                         <div className="class-button-group">
-
-                            {!this.props.flags.facial && <img src={CameraIcon} onClick={() => this.handleShow('facial-recog')} />}
+                            
+                            {/* if flag is false then show img which has an onClick event */}
+                            {!this.state.studentAuthObj.facialFlag && <img src={CameraIcon} onClick={() => this.handleShow('facial-recog')} />}
 
                             <Modal show={this.state.showModal === 'facial-recog'} onHide={this.handleClose}>
                                 <Modal.Header closeButton>
@@ -89,15 +150,19 @@ class ClassItem extends Component {
                                 </Modal.Footer>
                                 {/* onClick={() => toast.success('You have successfully passed the facial check.')} - throw toast when facial recog is done correct and only throw once all three are done */}
                             </Modal>
-                            {this.props.flags.facial && <img src={GreenTickIcon} />}
-    
-                            {!this.props.flags.captcha && <img src={RoundArrowsIcon} onClick={() => this.showInteractiveModal()} />}
-                            <InteractiveModal show={this.state.show} handleClose={this.hideInteractiveModal}>
+                            {this.state.studentAuthObj.facialFlag && <img src={GreenTickIcon} />}
+                            {/* if flag is true then show green tick*/}
+                            
+                            {/* if flag is false then show img which has an onClick event */}
+                            {!this.state.studentAuthObj.recaptchaFlag && <img src={RoundArrowsIcon} onClick={() => this.showInteractiveModal()} />}
+                            <InteractiveModal show={this.state.show} handleClose={this.hideInteractiveModal} handleCaptcha={this.handleCaptcha}>
 								<p>Modal</p>
 							</InteractiveModal>
-                            {this.props.flags.captcha && <img src={GreenTickIcon} />}
+                            {this.state.studentAuthObj.recaptchaFlag && <img src={GreenTickIcon} />}
+                            {/* if flag is true then show green tick*/}
 
-                            {!this.props.flags.pin && <img src={PinCodeIcon} onClick={() => this.handleShow('email-pin')} />}
+                            {/* if flag is false then show img which has an onClick event */}
+                            {!this.state.studentAuthObj.emailPinFlag && <img src={PinCodeIcon} onClick={() => this.handleShow('email-pin')} />}
                             <Modal show={this.state.showModal === 'email-pin'} onHide={this.handleClose}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Enter a Pin</Modal.Title>
@@ -117,12 +182,13 @@ class ClassItem extends Component {
                                         </InputGroup.Append>
                                     </InputGroup>
 
-                                    <Button variant="primary" onClick={this.handleClose}>
+                                    <Button variant="primary" onClick={this.handlePin}>
                                         ok
           </Button>
                                 </Modal.Footer>
                             </Modal>
-                            {this.props.flags.pin && <img src={GreenTickIcon} />}
+                            {this.state.studentAuthObj.emailPinFlag && <img src={GreenTickIcon} />}
+                            {/* if flag is true then show green tick*/}
                         </div>
                     </Card.Text>
                 </Card.Body>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import ScriptTag from 'react-script-tag';
 import Button from 'react-bootstrap/Button';
 
-const Modal = ({ handleClose, show }) => {
+const Modal = ({ handleClose, show, handleCaptcha}) => {
 	<ScriptTag src='https://www.google.com/recaptcha/api.js' />;
 
 	const showHideClassName = show ? 'modal display-block' : 'modal display-none';
@@ -16,7 +16,7 @@ const Modal = ({ handleClose, show }) => {
 			.then(function (response) {
 				console.log(response);
 				if (response.data == 'the user is a HUMAN :)') {
-					alert(' u Verified');
+					handleCaptcha();
 				} else {
 					alert('Recaptcha has expired please verify again');
 				}

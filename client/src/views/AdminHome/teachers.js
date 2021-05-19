@@ -69,25 +69,35 @@ class AdminHome extends Component {
                 teacherLocation: '',
                 teacherPassword: '',
                 showModal: id,
-                isEdit: true,
+                isEdit: false,
             });
         }
     }
     handleClose() {
         this.setState({
-            showModal: null, teacherName: '',
+            showModal: null,
+            teacherName: '',
             teacherID: '',
             teacherDescription: '',
             teacherYear: '',
             teacherFaculty: '',
             teacherEmail: '',
             teacherLocation: '',
-            teacherPassword: ''
+            teacherPassword: '',
+            isEdit: false,
         });
     }
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
+
+    onDelete = () => {
+        axios.post('http://localhost:5000/api/teacher/delete', {userid: this.state.teacherID}).then(()=>{
+            this.handleClose();
+            this.loadTeachList();
+        });
+    }
+
     onSave = async (e) => {
         e.preventDefault();
         const { teacherName,
@@ -111,17 +121,26 @@ class AdminHome extends Component {
         }
 
         try {
-            let response = await axios.post('http://localhost:5000/api/teacher/register', body)
+            let response;
+            if(this.state.isEdit){
+                response = await axios.post('http://localhost:5000/api/teacher/edit', body);
+            } else {
+                response = await axios.post('http://localhost:5000/api/teacher/register', body);
+            }
             console.log(response.data.message);
             this.handleClose();
+            this.loadTeachList();
         } catch (e) {
             console.log("Could not register teacher");
             console.log(e.message);
-
         }
     }
 
     componentDidMount() {
+        this.loadTeachList();
+    }
+
+    loadTeachList = () => {
         axios.get('http://localhost:5000/api/teacher/all').then((data)=>{
             let rows = data.data.teachers;
             rows.forEach(r=>r.id=r._id);
@@ -198,7 +217,7 @@ class AdminHome extends Component {
 
                             </Modal.Body>
                             <Modal.Footer style={{ float: 'right' }}>
-                                {this.state.isEdit ? <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: 'red', color: 'white' }} onClick={this.onSave}>Delete</Button>: ''}
+                                {this.state.isEdit ? <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: 'red', color: 'white' }} onClick={this.onDelete}>Delete</Button>: ''}
                                 <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px', backgroundColor: '#FED8B1' }} onClick={this.onSave}> Save</Button>
                             </Modal.Footer>
                         </Modal>
