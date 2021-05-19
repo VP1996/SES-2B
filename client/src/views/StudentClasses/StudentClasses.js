@@ -5,6 +5,9 @@ import 'react-big-scheduler/lib/css/style.css';
 import NavBar from '../../components/Navbar/BlueNavBar';
 import Card from 'react-bootstrap/Card';
 import ClassItem from './ClassItem';
+import CameraIcon from '../../images/cameraIcon.png';
+import RoundArrowsIcon from '../../images/roundArrowsIcon.png';
+import PinCodeIcon from '../../images/pinCodeIcon.png';
 import axios from 'axios';
 
 const DemoData = {
@@ -38,52 +41,6 @@ const DemoData = {
 	],
 };
 
-const classesMockData = [
-	{
-		classId: 1,
-		className: 'Application Programming',
-		startTime: '09:00',
-		endTime: '11:00',
-		flags: {
-			facial: false,
-			captcha: false,
-			pin: true,
-		},
-	},
-	{
-		classId: 2,
-		className: 'Internet Programming',
-		startTime: '11:00',
-		endTime: '13:00',
-		flags: {
-			facial: false,
-			captcha: false,
-			pin: false,
-		},
-	},
-	{
-		classId: 3,
-		className: 'Software Studio 3A',
-		startTime: '14:00',
-		endTime: '16:00',
-		flags: {
-			facial: false,
-			captcha: true,
-			pin: true,
-		},
-	},
-	{
-		classId: 4,
-		className: 'Database Fundamental',
-		startTime: '16:00',
-		endTime: '20:00',
-		flags: {
-			facial: false,
-			captcha: false,
-			pin: true,
-		},
-	},
-];
 
 class Student extends Component {
 	constructor(props) {
@@ -164,7 +121,15 @@ class Student extends Component {
 					}}
 				>
 					<Card.Body>
-						<Card.Title>All Classes</Card.Title>
+						<div style={{marginBottom:'40px'}}>
+							<Card.Title style={{float: 'left' }}>All Classes</Card.Title>
+							<div style={{ float: "right", fontSize: 'small', display: 'flex',marginRight: '30px' }}>
+								<img src={CameraIcon}style={{width: '30px', height: '30px', marginLeft: '15px',marginRight: '15px' }}/>
+								<img src={RoundArrowsIcon}style={{width: '30px', height: '30px', marginLeft: '15px',marginRight: '15px' }}/>
+								<img src={PinCodeIcon} style={{width: '30px', height: '30px', marginLeft: '15px',marginRight: '15px' }}/>
+							</div>
+							</div>
+
 						<Card.Text>
 							{this.state.classes ? this.state.classes.map(aClass => (
 								<ClassItem
@@ -173,7 +138,7 @@ class Student extends Component {
 									// flags={c.flags}
 									startTime={aClass.startTime}
 									endTime={aClass.endTime}
-									studentAuth ={aClass.students}
+									studentAuth={aClass.students}
 								/>
 							)) : console.log("there are no classes")}
 						</Card.Text>

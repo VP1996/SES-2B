@@ -22,7 +22,7 @@ class ClassItem extends Component {
         this.handleClose = this.handleClose.bind(this);
         this.handlePicture = this.handlePicture.bind(this);
         this.handlePin = this.handlePin.bind(this);
-        // this.handleCaptcha = this.handlePin.bind(this);
+		this.handleCaptcha = this.handleCaptcha.bind(this);
         this.showInteractiveModal = this.showInteractiveModal.bind(this);
 		this.hideInteractiveModal = this.hideInteractiveModal.bind(this);
 
@@ -76,7 +76,10 @@ class ClassItem extends Component {
         // set facialFlag in database to true
         let response = await axios.post("http://localhost:5000/api/class/updateFacialFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
         console.log(response.data.message)
-        
+
+        //if third auth completed- then display snackbar
+
+
         // close modal
         this.handleClose()
     }
@@ -96,8 +99,23 @@ class ClassItem extends Component {
         let response = await axios.post("http://localhost:5000/api/class/updatePinFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
         console.log(response.data.message)
 
+        //if third auth completed- then display snackbar
+
+
         //close modal
         this.handleClose()
+    }
+
+    async handleCaptcha() {
+        //update flag in database
+        let response = await axios.post("http://localhost:5000/api/class/updateCaptchaFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
+        console.log(response.data.message)
+
+        //if third auth completed- then display snackbar
+
+        
+        //close modal
+        this.hideInteractiveModal()
     }
 
     render() {
@@ -136,11 +154,11 @@ class ClassItem extends Component {
                             {/* if flag is true then show green tick*/}
                             
                             {/* if flag is false then show img which has an onClick event */}
-                            {!this.state.studentAuthObj.captchaFlag && <img src={RoundArrowsIcon} onClick={() => this.showInteractiveModal()} />}
-                            <InteractiveModal show={this.state.show} handleClose={this.hideInteractiveModal}>
+                            {!this.state.studentAuthObj.recaptchaFlag && <img src={RoundArrowsIcon} onClick={() => this.showInteractiveModal()} />}
+                            <InteractiveModal show={this.state.show} handleClose={this.hideInteractiveModal} handleCaptcha={this.handleCaptcha}>
 								<p>Modal</p>
 							</InteractiveModal>
-                            {this.state.studentAuthObj.reCaptchaFlag && <img src={GreenTickIcon} />}
+                            {this.state.studentAuthObj.recaptchaFlag && <img src={GreenTickIcon} />}
                             {/* if flag is true then show green tick*/}
 
                             {/* if flag is false then show img which has an onClick event */}

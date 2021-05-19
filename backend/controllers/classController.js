@@ -251,19 +251,18 @@ module.exports = {
         const studentID = req.body.studentID
         const classID = req.body.classID
 
-        Class.updateOne({classID: classID, "students.studentID": studentID}, {$set: {"students.$.facialFlag": true}})
+        Class.updateOne({classID: classID, "students.studentID": studentID}, {$set: {"students.$.recaptchaFlag": true}})
             .then(response => {
-                console.log(response)
                 return res.status(200).json({
                     response,
                     success: true,
-                    message: "Updated facial flag to true"
+                    message: "Updated captcha flag to true"
                 })
             })
             .catch(e => {
                 return res.status(400).json({
                     success: false,
-                    message: "Could not update facial flag."
+                    message: "Could not update captcha flag."
                 })
             });
     },
