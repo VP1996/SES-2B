@@ -7,6 +7,7 @@ const passport = require('passport');
 
 //routes
 const users = require('./routes/api/user');
+const auth = require('./routes/api/auth');
 const studentsRouter = require('./routes/student');
 const teachersRouter = require('./routes/teacher');
 const classesRouter = require('./routes/class');
@@ -56,6 +57,7 @@ require("./config/passport-teacher")(passport);
 
 //use Routes
 // app.use('/api', users);
+app.use('/api/auth', auth)
 app.use('/api/student',studentsRouter);
 app.use('/api/teacher',teachersRouter);
 app.use('/api/class',classesRouter);
