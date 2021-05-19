@@ -10,11 +10,12 @@ import { toast } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
+import Alert from 'react-bootstrap/Alert'
 import FormControl from 'react-bootstrap/FormControl'
 import InteractiveModal from '../../components/Interactiveauth/Interactive.js';
 import axios from 'axios';
 import WebcamCapture from '../../components/WebcamCapture'
-import { ContextBuilder } from 'express-validator/src/context-builder';
+// import { ContextBuilder } from 'express-validator/src/context-builder';
 
 class ClassItem extends Component {
     constructor(props) {
@@ -22,7 +23,6 @@ class ClassItem extends Component {
 
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handlePicture = this.handlePicture.bind(this);
         this.handlePin = this.handlePin.bind(this);
         this.handleCaptcha = this.handleCaptcha.bind(this);
         this.showInteractiveModal = this.showInteractiveModal.bind(this);
@@ -35,7 +35,8 @@ class ClassItem extends Component {
             pin: '**********',
             pinEntered: '',
             checkBoxChecked: false,
-            studentAuthObj: {}
+            studentAuthObj: {},
+            isUserMultiAuthenticated: false
         };
     }
 
@@ -67,64 +68,66 @@ class ClassItem extends Component {
     handleClose() {
         this.setState({ showModal: null, pinEntered: '', checkBoxChecked: false });
     }
-    async handlePicture() {
-        //take picture using user webcam - use a package?
-        this.setState(prevState => ({
-            studentAuthObj: {
-                ...prevState.studentAuthObj,
-                facialFlag: true
-            }
-        }))
 
-        // set facialFlag in database to true
-        let response = await axios.post("http://localhost:5000/api/class/updateFacialFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
-        console.log(response.data.message)
-
-        //if third auth completed- then display snackbar
-
-
-        // close modal
-        this.handleClose()
-    }
-
-    b64toBlob(b64Data, contentType='', sliceSize=512) {
+    b64toBlob(b64Data, contentType = '', sliceSize = 512) {
         const byteCharacters = atob(b64Data);
         const byteArrays = [];
-     
+
         for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
             const slice = byteCharacters.slice(offset, offset + sliceSize);
-     
+
             const byteNumbers = new Array(slice.length);
             for (let i = 0; i < slice.length; i++) {
                 byteNumbers[i] = slice.charCodeAt(i);
             }
-     
+
             const byteArray = new Uint8Array(byteNumbers);
-     
+
             byteArrays.push(byteArray);
         }
-     
-        const blob = new Blob(byteArrays, {type: contentType});
+
+        const blob = new Blob(byteArrays, { type: contentType });
         return blob;
     }
 
     async handleVerifyImage(src) {
         console.log(src)
-        console.log('authenticate photo')
+        console.log('authenticating photo...')
 
         var block = src.split(";");
         var contentType = block[0].split(":")[1];
         var realData = block[1].split(",")[1];
         var blob = this.b64toBlob(realData, contentType);
-        
+
         const userid = JSON.parse(localStorage.getItem("studentData")).userid
         const formData = new FormData();
         formData.append('profile', blob, "userFace.jpeg")
         formData.append('username', userid)
         //console.log(formData)
         let response = await axios.post("http://localhost:5000/api/auth/verifyFace", formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-        
-        //console.log(response.data)
+
+        console.log(response.data)
+        if (response.data) {
+            this.setState(prevState => ({
+                studentAuthObj: {
+                    ...prevState.studentAuthObj,
+                    facialFlag: true
+                }
+            }))
+
+            // set facialFlag in database to true
+            let response = await axios.post("http://localhost:5000/api/class/updateFacialFlag", { studentID: JSON.parse(localStorage.getItem("studentData")).userid, classID: this.props.classId })
+            console.log(response.data.message)
+
+            //if its the third auth completed- then display snackbar
+            if (this.state.studentAuthObj.facialFlag && this.state.studentAuthObj.recaptchaFlag && this.state.studentAuthObj.emailPinFlag) {
+                this.setState({ isUserMultiAuthenticated: true });
+                alert('User is authenticated into class')
+            }
+
+            // close modal
+            this.handleClose()
+        }
     }
 
     async handlePin() {
@@ -143,7 +146,10 @@ class ClassItem extends Component {
         console.log(response.data.message)
 
         //if third auth completed- then display snackbar
-
+        if (this.state.studentAuthObj.facialFlag && this.state.studentAuthObj.recaptchaFlag && this.state.studentAuthObj.emailPinFlag) {
+            this.setState({ isUserMultiAuthenticated: true });
+            console.log("User is multi-authenticated")
+        }
 
         //close modal
         this.handleClose()
@@ -155,7 +161,10 @@ class ClassItem extends Component {
         console.log(response.data.message)
 
         //if third auth completed- then display snackbar
-
+        if (this.state.studentAuthObj.facialFlag && this.state.studentAuthObj.recaptchaFlag && this.state.studentAuthObj.emailPinFlag) {
+            this.setState({ isUserMultiAuthenticated: true });
+            alert('User is authenticated into class')
+        }
 
         //close modal
         this.hideInteractiveModal()
@@ -164,6 +173,10 @@ class ClassItem extends Component {
     render() {
         return (
             <Card style={{ margin: '10px' }}>
+                {this.state.isUserMultiAuthenticated === true &&
+                    (<Alert variant="success">
+                        <p> You successfully multi-authenticated into this class.</p>
+                    </Alert>)}
                 <Card.Body>
                     <Card.Text>
                         <div className="class-name">{this.props.name}</div>
@@ -183,16 +196,11 @@ class ClassItem extends Component {
                                         <InputGroup.Checkbox aria-label="Checkbox for web cam use" onClick={() => this.setState({ checkBoxChecked: true })} />
                                         <InputGroup.Text>Allow webcam use</InputGroup.Text>
                                     </InputGroup.Prepend>
-                                    <WebcamCapture handleVerifyImage={this.handleVerifyImage} />
-                                    {this.state.checkBoxChecked === true ?
-                                        (<Button variant="primary" onClick={this.handlePicture}>
-                                            Take a Picture!
-                                        </Button>) : (<Button variant="primary" disabled>
-                                            Take a Picture!
-                                        </Button>)}
+
+                                    {this.state.checkBoxChecked ?
+                                        (<WebcamCapture handleVerifyImage={this.handleVerifyImage} />) : ""}
 
                                 </Modal.Footer>
-                                {/* onClick={() => toast.success('You have successfully passed the facial check.')} - throw toast when facial recog is done correct and only throw once all three are done */}
                             </Modal>
                             {this.state.studentAuthObj.facialFlag && <img src={GreenTickIcon} />}
                             {/* if flag is true then show green tick*/}
