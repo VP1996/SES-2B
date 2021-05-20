@@ -6,7 +6,6 @@ import CameraIcon from '../../images/cameraIcon.png';
 import RoundArrowsIcon from '../../images/roundArrowsIcon.png';
 import PinCodeIcon from '../../images/pinCodeIcon.png';
 import GreenTickIcon from '../../images/greenTickIcon.png';
-import { toast } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
@@ -122,7 +121,6 @@ class ClassItem extends Component {
             //if its the third auth completed- then display snackbar
             if (this.state.studentAuthObj.facialFlag && this.state.studentAuthObj.recaptchaFlag && this.state.studentAuthObj.emailPinFlag) {
                 this.setState({ isUserMultiAuthenticated: true });
-                alert('User is authenticated into class')
             }
 
             // close modal
@@ -148,7 +146,6 @@ class ClassItem extends Component {
         //if third auth completed- then display snackbar
         if (this.state.studentAuthObj.facialFlag && this.state.studentAuthObj.recaptchaFlag && this.state.studentAuthObj.emailPinFlag) {
             this.setState({ isUserMultiAuthenticated: true });
-            console.log("User is multi-authenticated")
         }
 
         //close modal
@@ -163,7 +160,6 @@ class ClassItem extends Component {
         //if third auth completed- then display snackbar
         if (this.state.studentAuthObj.facialFlag && this.state.studentAuthObj.recaptchaFlag && this.state.studentAuthObj.emailPinFlag) {
             this.setState({ isUserMultiAuthenticated: true });
-            alert('User is authenticated into class')
         }
 
         //close modal

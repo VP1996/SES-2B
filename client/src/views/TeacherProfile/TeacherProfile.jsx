@@ -15,7 +15,8 @@ class TeacherProfile extends Component {
         super(props);
 
         this.state = {
-            teacher: ''
+            teacher: '',
+            classes: []
         }
     }
 
@@ -33,7 +34,9 @@ class TeacherProfile extends Component {
             console.log(this.state);
         } catch (e) {
             console.log(e);
-        }  
+        }
+        let classesRes = await axios.post("http://localhost:5000/api/class/teacher-classes", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid })
+        this.setState({ classes: classesRes.data.classes })
     }
 
     render() {
@@ -47,9 +50,9 @@ class TeacherProfile extends Component {
                         <div className="profile-img"></div>
                         <div className="right-information">
                             <div className="heading">
-                            <h3>{this.state.teacher.name}</h3>
+                                <h3>{this.state.teacher.name}</h3>
                                 <Button variant="outline-danger" style={{ borderRadius: '20px', width: '100px' }} href="/teacher/profile-edit"> Edit</Button>
-                                </div>
+                            </div>
                             <p>{this.state.teacher.description}</p>
                             <div className="details">
                                 <h6> | {this.state.teacher.campusLocation}, Australia |</h6>
@@ -69,10 +72,9 @@ class TeacherProfile extends Component {
                         <Card className="bottom-cards">
                             <h6 style={{ margin: '15px', color: 'grey' }}>Classes Allocated</h6>
                             <ListGroup variant="flush" style={{ height: '100%' }}>
-                                <ListGroup.Item>Mathematical Modelling 1</ListGroup.Item>
-                                <ListGroup.Item>Engineering Communications</ListGroup.Item>
-                                <ListGroup.Item>Programming Fundamentals</ListGroup.Item>
-                                <ListGroup.Item>Data Structures and Algorithms</ListGroup.Item>
+                                {this.state.classes.map(aClass => (
+                                    <ListGroup.Item>{aClass.className}</ListGroup.Item>
+                                ))}
                             </ListGroup>
                         </Card>
                         <Card className="bottom-cards">

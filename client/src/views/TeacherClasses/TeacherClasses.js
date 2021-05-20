@@ -5,6 +5,10 @@ import 'react-big-scheduler/lib/css/style.css';
 import NavBar from '../../components/Navbar/BlueNavBar';
 import Card from "react-bootstrap/Card";
 import ClassItem from "../TeacherClasses/ClassItem";
+import CameraIcon from '../../images/cameraIcon.png';
+import RoundArrowsIcon from '../../images/roundArrowsIcon.png';
+import PinCodeIcon from '../../images/pinCodeIcon.png';
+import axios from 'axios';
 
 const DemoData = {
     resources: [{
@@ -34,56 +38,14 @@ const DemoData = {
     ]
 }
 
-const classesMockData = [
-    {
-        classId: 1,
-        className: 'Application Programming',
-        startTime: '09:00',
-        endTime: '11:00',
-        flags: {
-            facial: false,
-            captcha: false,
-            pin: false,
-        }
-    },
-    {
-        classId: 2,
-        className: 'Internet Programming',
-        startTime: '11:00',
-        endTime: '13:00',
-        flags: {
-            facial: false,
-            captcha: false,
-            pin: false,
-        }
-    },
-    {
-        classId: 3,
-        className: 'Software Studio 3A',
-        startTime: '14:00',
-        endTime: '16:00',
-        flags: {
-            facial: false,
-            captcha: false,
-            pin: false,
-        }
-    },
-    {
-        classId: 4,
-        className: 'Database Fundamental',
-        startTime: '16:00',
-        endTime: '20:00',
-        flags: {
-            facial: false,
-            captcha: false,
-            pin: false,
-        }
-    },
-];
 
 class Teacher extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            classes: []
+        }
 
         let schedulerData = new SchedulerData(new Date(), ViewTypes.Week, false, false, {
             startResizable: false,
@@ -100,6 +62,17 @@ class Teacher extends Component {
         }
     }
 
+    async componentDidMount() {
+        let classesRes = await axios.post("http://localhost:5000/api/class/teacher-classes", { teacherID: JSON.parse(localStorage.getItem("teacherData")).userid });
+        this.setState({ classes: classesRes.data.classes });
+        
+        console.log(this.state.classes)
+    }
+
+    // fetchUserClasses = async () => {
+
+    // }
+ 
     render() {
         const { viewModel } = this.state;
         return (
@@ -126,10 +99,25 @@ class Teacher extends Component {
                 </Card>
                 <Card style={{ width: '900px', margin: ' 40px auto', backgroundColor: '#f6f6f6' }}>
                     <Card.Body>
-                        <Card.Title>Today's Classes</Card.Title>
+                        <div style={{ marginBottom: '40px' }}>
+                            <Card.Title style={{ float: 'left' }}>All Classes</Card.Title>
+                            <div style={{ float: "right", fontSize: 'small', display: 'flex', marginRight: '30px' }}>
+                                <img src={CameraIcon} style={{ width: '30px', height: '30px', marginLeft: '15px', marginRight: '15px' }} />
+                                <img src={RoundArrowsIcon} style={{ width: '30px', height: '30px', marginLeft: '15px', marginRight: '15px' }} />
+                                <img src={PinCodeIcon} style={{ width: '30px', height: '30px', marginLeft: '15px', marginRight: '15px' }} />
+                            </div>
+                        </div>
                         <Card.Text>
-                            {classesMockData.map(c => <ClassItem classId={c.classId} name={c.className} flags={c.flags}
-                                startTime={c.startTime} endTime={c.endTime} />)}
+                            {console.log(this.state.classes)}
+                            {this.state.classes ? this.state.classes.map(aClass => (
+                                <ClassItem
+                                    classId={aClass.classID}
+                                    name={aClass.className}
+                                    startTime={aClass.startTime}
+                                    endTime={aClass.endTime}
+                                    teacherAuth={aClass.teachers}
+                                />
+                            )) : console.log("there are no classes")}
                         </Card.Text>
                     </Card.Body>
                 </Card>

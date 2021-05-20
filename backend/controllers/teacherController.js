@@ -1,4 +1,5 @@
 const Teacher = require("../models/teacher");
+const Class = require("../models/class");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -246,14 +247,27 @@ module.exports = {
         //use sendMail once transport is created and message is configures
         transport.sendMail(mailOptions, (error, info) => {
             if (error) {
-                return console.log(error);
+                console.log(error);
             }
             console.log('Message sent: %s', info.messageId)
-            res.json({
-                success: true,
-                message: 'Email sent to all students'
-            })
         })
+
+        //update emailPinFlag for teacher as email has been sent. 
+        Class.updateOne({ classID: classID, "teachers.tecaherID": teacherID }, { $set: { "teachers.$.emailPinFlag": true } })
+            .then(response => {
+                console.log(response)
+                return res.status(200).json({
+                    response,
+                    success: true,
+                    message: "Email sent and updated pin flag to true"
+                })
+            })
+            .catch(e => {
+                return res.status(400).json({
+                    success: false,
+                    message: "Could not update pin flag."
+                })
+            });
         
     }
 }

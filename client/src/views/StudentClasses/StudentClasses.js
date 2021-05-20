@@ -74,7 +74,6 @@ class Student extends Component {
 	}
 
 	async componentDidMount() {
-		console.log("HI");
 		let classesRes = await axios.post("http://localhost:5000/api/class/student-classes", { studentID: JSON.parse(localStorage.getItem("studentData")).userid });
 		this.setState({ classes: classesRes.data.classes });
 		console.log(this.state.classes);
@@ -121,21 +120,21 @@ class Student extends Component {
 					}}
 				>
 					<Card.Body>
-						<div style={{marginBottom:'40px'}}>
-							<Card.Title style={{float: 'left' }}>All Classes</Card.Title>
-							<div style={{ float: "right", fontSize: 'small', display: 'flex',marginRight: '30px' }}>
-								<img src={CameraIcon}style={{width: '30px', height: '30px', marginLeft: '15px',marginRight: '15px' }}/>
-								<img src={RoundArrowsIcon}style={{width: '30px', height: '30px', marginLeft: '15px',marginRight: '15px' }}/>
-								<img src={PinCodeIcon} style={{width: '30px', height: '30px', marginLeft: '15px',marginRight: '15px' }}/>
+						<div style={{ marginBottom: '40px' }}>
+							<Card.Title style={{ float: 'left' }}>All Classes</Card.Title>
+							<div style={{ float: "right", fontSize: 'small', display: 'flex', marginRight: '30px' }}>
+								<img src={CameraIcon} style={{ width: '30px', height: '30px', marginLeft: '15px', marginRight: '15px' }} />
+								<img src={RoundArrowsIcon} style={{ width: '30px', height: '30px', marginLeft: '15px', marginRight: '15px' }} />
+								<img src={PinCodeIcon} style={{ width: '30px', height: '30px', marginLeft: '15px', marginRight: '15px' }} />
 							</div>
-							</div>
+						</div>
 
 						<Card.Text>
+							{console.log(this.state.classes)}
 							{this.state.classes ? this.state.classes.map(aClass => (
 								<ClassItem
 									classId={aClass.classID}
 									name={aClass.className}
-									// flags={c.flags}
 									startTime={aClass.startTime}
 									endTime={aClass.endTime}
 									studentAuth={aClass.students}

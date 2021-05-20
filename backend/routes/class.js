@@ -34,11 +34,20 @@ router
 router
     .route('/updateFacialFlag')
     .post(classController.updateFacialFlag)
+    router
+    .route('/updateTeacherFacialFlag')
+    .post(classController.updateTeacherFacialFlag)
 router
     .route('/updateCaptchaFlag')
     .post(classController.updateCaptchaFlag)
 router
+    .route('/updateTeacherCaptchaFlag')
+    .post(classController.updateTeacherCaptchaFlag)
+router
     .route('/updatePinFlag')
     .post(classController.updatePinFlag)
+router
+    .route('/getTeacherAuth')
+    .post(classController.findTeacherAuthObject)
 
 module.exports = router;
